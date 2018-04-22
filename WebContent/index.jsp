@@ -24,7 +24,7 @@
 	<label></label>
 	<center>
 		<button type="submit" class="btn"
-			onclick="location='crwork_login_forms/index.html'">用户登录</button>
+			onclick="location='crwork_login_forms/form-1/index.html'">用户登录</button>
 	</center>
 	<label></label>
 	<label></label>
