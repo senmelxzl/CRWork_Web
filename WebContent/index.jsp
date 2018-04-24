@@ -4,6 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<%@ page language="java" import="java.util.*"%>
+<%@ page language="java" import="com.crwork.web.model.*"%>
+<%@ page language="java" import="com.crwork.web.dao.*"%>
+<%@ page language="java" import="com.crwork.web.util.*"%>
 
 <!-- CSS -->
 <link rel="stylesheet"
@@ -19,19 +23,32 @@
 <title>一起分吧</title>
 </head>
 <body>
-	<label></label>
-	<label></label>
-	<label></label>
-	<center>
-		<button type="submit" class="btn"
-			onclick="location='crwork_login_forms/form-1/index.html'">用户登录</button>
-	</center>
-	<label></label>
-	<label></label>
-	<label></label>
-	<center>
-		<button type="submit" class="btn"
-			onclick="location='crwork_bsm_forms/index.html'">后台管理</button>
-	</center>
+	<%
+		UserDao mUserDao = new UserDao();
+		mUserDao.insertUserInforTest();
+	%>
+
+	<div class="inner-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-8 col-sm-offset-2 text">
+					<h1>
+						<a href="#"><strong>一起分吧</strong></a>
+					</h1>
+					<div class="description">
+						<p>垃圾分一分，环境满满分 !</p>
+						<p>共建美好家园 !</p>
+					</div>
+					<div>
+						<button type="submit" class="btn"
+							onclick="location='crwork_login_forms/form-1/index.html'">用户登录</button>
+
+						<button type="submit" class="btn"
+							onclick="location='crwork_bsm_forms/index.html'">后台管理</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

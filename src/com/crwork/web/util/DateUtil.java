@@ -3,6 +3,12 @@ package com.crwork.web.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * date util class
+ * 
+ * @author xiezhenlin
+ *
+ */
 public class DateUtil {
 
 	public DateUtil() {
