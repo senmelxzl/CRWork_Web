@@ -23,11 +23,6 @@
 <title>一起分吧</title>
 </head>
 <body>
-	<%
-		UserDao mUserDao = new UserDao();
-		mUserDao.insertUserInforTest();
-	%>
-
 	<div class="inner-bg">
 		<div class="container">
 			<div class="row">
@@ -45,6 +40,9 @@
 
 						<button type="submit" class="btn"
 							onclick="location='crwork_bsm_forms/index.html'">后台管理</button>
+
+						<button type="submit" class="btn"
+							onclick="location='crwork_upload_litterdata_forms/index.jsp'">数据上传</button>
 					</div>
 				</div>
 			</div>

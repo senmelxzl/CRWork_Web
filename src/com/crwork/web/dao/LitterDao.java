@@ -3,8 +3,14 @@ package com.crwork.web.dao;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.crwork.web.dbutil.CRWorkJDBC;
 import com.crwork.web.model.LitterModel;
 import com.crwork.web.util.DateUtil;
 
@@ -14,9 +20,14 @@ import com.crwork.web.util.DateUtil;
 public class LitterDao {
 	private final static String TAG = "LitterDao";
 
+	private Connection mConnection = null;
+	private CRWorkJDBC mCRWorkJDBC = null;
+
 	public LitterDao() {
 		super();
 		// TODO Auto-generated constructor stub
+		mCRWorkJDBC = new CRWorkJDBC();
+		mConnection = mCRWorkJDBC.getCRWorkConn();
 	}
 
 	/**
@@ -26,7 +37,27 @@ public class LitterDao {
 	 * @return
 	 */
 	public boolean insertLitterData(LitterModel mLitterModel) {
-		return true;
+
+		try {
+			PreparedStatement psql;
+			psql = mConnection.prepareStatement("insert into " + CRWorkJDBC.LITTER_TABLE
+					+ " (userID,littertypeID,weight,litterdate)" + "values(?,?,?,?)");
+			psql.setInt(1, mLitterModel.getUserID());
+			psql.setInt(2, mLitterModel.getLittertypeID());
+			psql.setDouble(3, mLitterModel.getWeight());
+			psql.setString(4, mLitterModel.getLitterdate());
+			psql.executeUpdate();
+			psql.close();
+			System.out.println("insertUserInfor() insert data success!" + "\n");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			System.out.println("insertUserInfor() function completed!" + "\n");
+		}
+		return false;
 	}
 
 	/**
@@ -35,8 +66,27 @@ public class LitterDao {
 	 * @param userID
 	 * @return
 	 */
-	public ArrayList<LitterModel> queryLitterData(int userID) {
-		return null;
+	public ArrayList<LitterModel> queryLitterDataByUserID(int userID) {
+		ArrayList<LitterModel> lmList = new ArrayList<LitterModel>();
+		try {
+			Statement sql = mConnection.createStatement();
+			ResultSet rs = sql.executeQuery(
+					"SELECT * FROM " + CRWorkJDBC.LITTER_TABLE + (userID == 0 ? "" : "where userID=" + userID));
+			LitterModel mLitterModel = null;
+			while (rs.next()) {
+				mLitterModel = new LitterModel();
+				mLitterModel.setID(rs.getInt(1));
+				mLitterModel.setUserID(rs.getInt(2));
+				mLitterModel.setLittertypeID(rs.getInt(3));
+				mLitterModel.setWeight(rs.getDouble(4));
+				mLitterModel.setLitterdate(rs.getString(5));
+				lmList.add(mLitterModel);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lmList;
 	}
 
 	/**
@@ -45,7 +95,46 @@ public class LitterDao {
 	 * @param dataFile
 	 * @return
 	 */
-	public ArrayList<LitterModel> readDatafromFile(String filePath) {
+	public ArrayList<LitterModel> readDatafromFile(File file) {
+		// TODO Auto-generated method stub
+		ArrayList<LitterModel> list = new ArrayList<LitterModel>();
+		BufferedReader reader = null;
+		String temp = null;
+		int line = 1;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			while ((temp = reader.readLine()) != null) {
+				System.out.println(TAG + line + ":" + temp);
+				LitterModel mLitterModel = new LitterModel();
+				String[] list_temp = temp.split(" ");
+				mLitterModel.setUserID(Integer.parseInt(list_temp[0]));
+				mLitterModel.setLittertypeID(Integer.parseInt(list_temp[1]));
+				mLitterModel.setWeight(Double.parseDouble(list_temp[2]));
+				mLitterModel.setLitterdate(DateUtil.getLitterDate());
+				list.add(mLitterModel);
+				line++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * analysis txt content
+	 *
+	 * @param dataFile
+	 * @return
+	 */
+	public ArrayList<LitterModel> readDatafromFilePath(String filePath) {
 		// TODO Auto-generated method stub
 		ArrayList<LitterModel> list = new ArrayList<LitterModel>();
 		BufferedReader reader = null;
@@ -93,5 +182,14 @@ public class LitterDao {
 			}
 		}
 		return true;
+	}
+
+	public void CloseConnection() {
+		try {
+			mConnection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
