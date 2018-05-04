@@ -8,7 +8,7 @@ package com.crwork.web.model;
  */
 public class LitterModel {
 	private int ID;
-	private int userID;
+	private int userId;
 	private int littertypeID;
 	private Double weight;
 	private String litterdate;
@@ -21,12 +21,12 @@ public class LitterModel {
 		ID = iD;
 	}
 
-	public int getUserID() {
-		return userID;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public int getLittertypeID() {

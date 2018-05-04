@@ -23,7 +23,6 @@ public class UserDao {
 	public UserDao() {
 		// TODO Auto-generated constructor stub
 		mCRWorkJDBC = new CRWorkJDBC();
-		mConnection = mCRWorkJDBC.getCRWorkConn();
 	}
 
 	/**
@@ -33,16 +32,18 @@ public class UserDao {
 	 */
 	public ArrayList<UserModel> getUserList() {
 		ArrayList<UserModel> umlist = new ArrayList<UserModel>();
+		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
-			Statement sql = mConnection.createStatement();
-			ResultSet rs = sql.executeQuery("SELECT * FROM " + CRWorkJDBC.USER_TABLE);
+			String sql = "select * from " + CRWorkJDBC.USER_TABLE;
+			Statement st = mConnection.createStatement();
+			ResultSet rs = st.executeQuery(sql);
 			UserModel mUserModel = null;
 			while (rs.next()) {
 				mUserModel = new UserModel();
 				mUserModel.setID(rs.getInt(1));
-				mUserModel.setUserID(rs.getInt(2));
+				mUserModel.setUserId(rs.getInt(2));
 				mUserModel.setUserName(rs.getString(3));
-				mUserModel.setVillageID(rs.getInt(4));
+				mUserModel.setRegionID(rs.getInt(4));
 				mUserModel.setUserType(rs.getInt(5));
 				mUserModel.setRegisteredDate(rs.getString(6));
 				umlist.add(mUserModel);
@@ -56,31 +57,148 @@ public class UserDao {
 	}
 
 	/**
+	 * get user information
+	 * 
+	 * @return UserModel
+	 */
+	public UserModel getUserInfor(int userId) {
+		UserModel mUserModel = null;
+		mConnection = mCRWorkJDBC.getCRWorkConn();
+		try {
+			String sql = "select * from " + CRWorkJDBC.USER_TABLE + " where userId=?";
+			PreparedStatement psmt = mConnection.prepareStatement(sql);
+			psmt.setInt(1, userId);
+			ResultSet rs = psmt.executeQuery();
+			while (rs.next()) {
+				mUserModel = new UserModel();
+				mUserModel.setID(rs.getInt(1));
+				mUserModel.setUserId(rs.getInt(2));
+				mUserModel.setUserName(rs.getString(3));
+				mUserModel.setRegionID(rs.getInt(4));
+				mUserModel.setUserType(rs.getInt(5));
+				mUserModel.setRegisteredDate(rs.getString(6));
+				mUserModel.setPsw(rs.getString(7));
+			}
+			System.out.println("getUserInfor()  success!" + "\n");
+			mConnection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("getUserInfor() completed!" + "\n");
+		return mUserModel;
+	}
+
+	/**
 	 * insert user data
 	 * 
 	 * @return boolean
 	 */
 	public boolean insertUserInfor(UserModel mUserModel) {
+		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
-			PreparedStatement psql;
-			psql = mConnection.prepareStatement("insert into " + CRWorkJDBC.USER_TABLE
-					+ " (userID,userName,villageID,userType,registeredDate)" + "values(?,?,?,?,?)");
-			psql.setInt(1, mUserModel.getUserID());
-			psql.setString(2, mUserModel.getUserName());
-			psql.setInt(3, mUserModel.getVillageID());
-			psql.setInt(4, mUserModel.getUserType());
-			psql.setString(5, mUserModel.getRegisteredDate());
-			psql.executeUpdate();
-			psql.close();
+			String sql = "insert into " + CRWorkJDBC.USER_TABLE
+					+ " (userId,userName,regionID,userType,registeredDate,psw)" + "values(?,?,?,?,?,?)";
+			PreparedStatement pst = mConnection.prepareStatement(sql);
+			pst.setInt(1, mUserModel.getUserId());
+			pst.setString(2, mUserModel.getUserName());
+			pst.setInt(3, mUserModel.getRegionID());
+			pst.setInt(4, mUserModel.getUserType());
+			pst.setString(5, mUserModel.getRegisteredDate());
+			pst.setString(6, mUserModel.getPsw());
+			pst.executeUpdate();
+			pst.close();
 			mConnection.close();
-			System.out.println("insertUserInfor() insert data success!" + "\n");
+			System.out.println("insertUserInfor()  success!" + "\n");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("insertUserInfor() function completed!" + "\n");
+			System.out.println("insertUserInfor() completed!" + "\n");
+		}
+		return false;
+	}
+
+	/**
+	 * update user data
+	 * 
+	 * @return boolean
+	 */
+	public boolean updateUserInfor(UserModel mUserModel) {
+		mConnection = mCRWorkJDBC.getCRWorkConn();
+		try {
+			String sql = "update" + CRWorkJDBC.USER_TABLE + " set userName=?,regionID=?,userType=? where userId=?";
+			PreparedStatement pst = mConnection.prepareStatement(sql);
+			pst.setString(1, mUserModel.getUserName());
+			pst.setInt(2, mUserModel.getRegionID());
+			pst.setInt(3, mUserModel.getUserType());
+			pst.setInt(4, mUserModel.getUserId());
+			pst.executeUpdate();
+			pst.close();
+			mConnection.close();
+			System.out.println("updateUserInfor()  success!" + "\n");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			System.out.println("updateUserInfor() completed!" + "\n");
+		}
+		return false;
+	}
+
+	/**
+	 * update user psw
+	 * 
+	 * @return boolean
+	 */
+	public boolean updateUserPsw(int userId, String psw) {
+		mConnection = mCRWorkJDBC.getCRWorkConn();
+		try {
+			String sql = "update" + CRWorkJDBC.USER_TABLE + " set psw=? where userId=?";
+			PreparedStatement pst = mConnection.prepareStatement(sql);
+			pst.setString(1, psw);
+			pst.setInt(2, userId);
+			pst.executeUpdate();
+			pst.close();
+			mConnection.close();
+			System.out.println("updateUserPsw()  success!" + "\n");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			System.out.println("updateUserPsw() completed!" + "\n");
+		}
+		return false;
+	}
+
+	/**
+	 * delete user data
+	 * 
+	 * @return boolean
+	 */
+	public boolean deleteUserInfor(int userId) {
+		mConnection = mCRWorkJDBC.getCRWorkConn();
+		try {
+			String sql = "delete from " + CRWorkJDBC.USER_TABLE + " where userId=?";
+			PreparedStatement pst = mConnection.prepareStatement(sql);
+			pst.setInt(1, userId);
+			pst.executeUpdate();
+			pst.close();
+			mConnection.close();
+			System.out.println("deleteUserInfor()  success!" + "\n");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			System.out.println("deleteUserInfor() completed!" + "\n");
 		}
 		return false;
 	}
@@ -92,11 +210,12 @@ public class UserDao {
 	 */
 	public boolean insertUserInforTest() {
 		UserModel mUserModelTest = new UserModel();
-		mUserModelTest.setUserID(1928883);
+		mUserModelTest.setUserId(198819);
 		mUserModelTest.setUserName("Tester");
 		mUserModelTest.setUserType(1);
-		mUserModelTest.setVillageID(12);
+		mUserModelTest.setRegionID(12);
 		mUserModelTest.setRegisteredDate(DateUtil.getLitterDate());
+		mUserModelTest.setPsw("xzl198819");
 		return insertUserInfor(mUserModelTest);
 	}
 }

@@ -41,21 +41,21 @@ public class LitterDao {
 		try {
 			PreparedStatement psql;
 			psql = mConnection.prepareStatement("insert into " + CRWorkJDBC.LITTER_TABLE
-					+ " (userID,littertypeID,weight,litterdate)" + "values(?,?,?,?)");
-			psql.setInt(1, mLitterModel.getUserID());
+					+ " (userId,littertypeID,weight,litterdate)" + "values(?,?,?,?)");
+			psql.setInt(1, mLitterModel.getUserId());
 			psql.setInt(2, mLitterModel.getLittertypeID());
 			psql.setDouble(3, mLitterModel.getWeight());
 			psql.setString(4, mLitterModel.getLitterdate());
 			psql.executeUpdate();
 			psql.close();
-			System.out.println("insertUserInfor() insert data success!" + "\n");
+			System.out.println("insertLitterData() insert data success!" + "\n");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("insertUserInfor() function completed!" + "\n");
+			System.out.println("insertLitterData() function completed!" + "\n");
 		}
 		return false;
 	}
@@ -66,17 +66,17 @@ public class LitterDao {
 	 * @param userID
 	 * @return
 	 */
-	public ArrayList<LitterModel> queryLitterDataByUserID(int userID) {
+	public ArrayList<LitterModel> queryLitterDataByUserID(int userId) {
 		ArrayList<LitterModel> lmList = new ArrayList<LitterModel>();
 		try {
 			Statement sql = mConnection.createStatement();
 			ResultSet rs = sql.executeQuery(
-					"SELECT * FROM " + CRWorkJDBC.LITTER_TABLE + (userID == 0 ? "" : "where userID=" + userID));
+					"SELECT * FROM " + CRWorkJDBC.LITTER_TABLE + (userId == 0 ? "" : "where userId=" + userId));
 			LitterModel mLitterModel = null;
 			while (rs.next()) {
 				mLitterModel = new LitterModel();
 				mLitterModel.setID(rs.getInt(1));
-				mLitterModel.setUserID(rs.getInt(2));
+				mLitterModel.setUserId(rs.getInt(2));
 				mLitterModel.setLittertypeID(rs.getInt(3));
 				mLitterModel.setWeight(rs.getDouble(4));
 				mLitterModel.setLitterdate(rs.getString(5));
@@ -107,7 +107,7 @@ public class LitterDao {
 				System.out.println(TAG + line + ":" + temp);
 				LitterModel mLitterModel = new LitterModel();
 				String[] list_temp = temp.split(" ");
-				mLitterModel.setUserID(Integer.parseInt(list_temp[0]));
+				mLitterModel.setUserId(Integer.parseInt(list_temp[0]));
 				mLitterModel.setLittertypeID(Integer.parseInt(list_temp[1]));
 				mLitterModel.setWeight(Double.parseDouble(list_temp[2]));
 				mLitterModel.setLitterdate(DateUtil.getLitterDate());
@@ -146,7 +146,7 @@ public class LitterDao {
 				System.out.println(TAG + line + ":" + temp);
 				LitterModel mLitterModel = new LitterModel();
 				String[] list_temp = temp.split(" ");
-				mLitterModel.setUserID(Integer.parseInt(list_temp[0]));
+				mLitterModel.setUserId(Integer.parseInt(list_temp[0]));
 				mLitterModel.setLittertypeID(Integer.parseInt(list_temp[1]));
 				mLitterModel.setWeight(Double.parseDouble(list_temp[2]));
 				mLitterModel.setLitterdate(DateUtil.getLitterDate());

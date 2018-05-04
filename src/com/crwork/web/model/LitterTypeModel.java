@@ -8,7 +8,7 @@ package com.crwork.web.model;
  */
 public class LitterTypeModel {
 	private int ID;
-	private int typeID;
+	private int littertypeID;
 	private String typeName;
 	private int typemark;
 	private Double price;
@@ -21,12 +21,12 @@ public class LitterTypeModel {
 		ID = iD;
 	}
 
-	public int getTypeID() {
-		return typeID;
+	public int getLittertypeID() {
+		return littertypeID;
 	}
 
-	public void setTypeID(int typeID) {
-		this.typeID = typeID;
+	public void setLittertypeID(int littertypeID) {
+		this.littertypeID = littertypeID;
 	}
 
 	public String getTypeName() {

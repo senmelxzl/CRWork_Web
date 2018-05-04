@@ -118,7 +118,6 @@ public class LoadFileServlet extends HttpServlet {
 						if (mLitterDao.uploadLitterlistData(mLitterModellist)) {
 							IsUploaded_message = "上传成功";
 						}
-						mLitterDao.CloseConnection();
 						HttpSession session = request.getSession();
 						session.setAttribute("IsUploaded_message", IsUploaded_message);
 						session.setAttribute("message", "upload file to " + UPLOAD_DIRECTORY + "success!");

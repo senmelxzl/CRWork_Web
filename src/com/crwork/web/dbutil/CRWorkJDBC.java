@@ -20,7 +20,7 @@ public class CRWorkJDBC {
 	// DB login user name
 	private static String username = "root";
 	// DB login password
-	private static String userpassword = "xzl198819cqh";
+	private static String userpassword = "xzl198819";
 	// Load DB address
 	private static String dburl = "jdbc:mysql://localhost:3306/" + database
 			+ "?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC";
@@ -33,22 +33,22 @@ public class CRWorkJDBC {
 	public final static String USER_TABLE = "crwork_user";
 	public final static String LITTER_TABLE = "crwork_litter";
 	public final static String LITTER_TYPE_TABLE = "crwork_litter_type";
-	public final static String VILLAGE_TABLE = "crwork_village";
+	public final static String REGION_TABLE = "crwork_region";
 
 	/**
 	 * DB table create SQL
 	 */
 	public final static String USER_TABLE_SQL = "create table " + USER_TABLE
-			+ "(ID int auto_increment primary key not null,userID int not null,userName varchar(20),villageID int not null,userType int not null,registeredDate varchar(20) not null)";
+			+ "(ID int auto_increment primary key not null,userId int not null,userName varchar(20),regionID int not null,userType int not null,registeredDate varchar(20) not null,psw varchar(20) not null)";
 
 	public final static String LITTER_TABLE_SQL = "create table " + LITTER_TABLE
-			+ "(ID int auto_increment primary key not null,userID int not null,littertypeID int not null,weight double(16,2) not null,litterdate varchar(20) not null)";
+			+ "(ID int auto_increment primary key not null,userId int not null,littertypeID int not null,weight double(16,2) not null,litterdate varchar(20) not null)";
 
 	public final static String LITTER_TYPE_TABLE_SQL = "create table " + LITTER_TYPE_TABLE
-			+ "(ID int auto_increment primary key not null,typeID int not null,typeName varchar(20),typemark int not null,price double(16,2) not null)";
+			+ "(ID int auto_increment primary key not null,littertypeID int not null,typeName varchar(20),typemark int not null,price double(16,2) not null)";
 
-	public final static String VILLAGE_TABLE_SQL = "create table " + VILLAGE_TABLE
-			+ "(ID int auto_increment primary key not null,villageID int not null,villageName varchar(20),belongID int not null,statusMark int not null)";
+	public final static String REGION_TABLE_SQL = "create table " + REGION_TABLE
+			+ "(ID int auto_increment primary key not null,regionID int not null,regionName varchar(20),regionParentID int not null,statusMark int not null,regionRegisterDate varchar(20) not null)";
 
 	public CRWorkJDBC() {
 		try {
@@ -58,7 +58,7 @@ public class CRWorkJDBC {
 			validateTableNameExist(USER_TABLE);
 			validateTableNameExist(LITTER_TABLE);
 			validateTableNameExist(LITTER_TYPE_TABLE);
-			validateTableNameExist(VILLAGE_TABLE);
+			validateTableNameExist(REGION_TABLE_SQL);
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -112,8 +112,8 @@ public class CRWorkJDBC {
 			SQL_TABLE = LITTER_TABLE_SQL;
 		} else if (tableName.equals(LITTER_TYPE_TABLE)) {
 			SQL_TABLE = LITTER_TYPE_TABLE_SQL;
-		} else if (tableName.equals(VILLAGE_TABLE)) {
-			SQL_TABLE = VILLAGE_TABLE_SQL;
+		} else if (tableName.equals(REGION_TABLE)) {
+			SQL_TABLE = REGION_TABLE_SQL;
 		}
 		if (!SQL_TABLE.equals("")) {
 			System.out.print(tableName + " table is not exist! \n");

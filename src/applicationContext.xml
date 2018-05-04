@@ -3,27 +3,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-	<bean id="UserModel" class="com.crwork.web.model.UserModel">
-		<property name="ID">
-			<value>1</value>
-		</property>
-		<property name="userID">
-			<value>190002310</value>
-		</property>
-		<property name="userName">
-			<value>测试用户</value>
-		</property>
-		<property name="villageID">
-			<value>1</value>
-		</property>
-		<property name="userType">
-			<value>0</value>
-		</property>
-		<property name="registeredDate">
-			<value>2018-04-03</value>
-		</property>
-	</bean>
 	<!-- 引入jdbc配置文件 -->
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

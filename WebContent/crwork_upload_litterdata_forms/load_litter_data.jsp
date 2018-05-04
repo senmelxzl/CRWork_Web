@@ -58,7 +58,7 @@
 				for (int i = 0; i < mLitterModellist.size(); i++) {
 			%>
 			<tr>
-				<td><%=mLitterModellist.get(i).getUserID()%></td>
+				<td><%=mLitterModellist.get(i).getUserId()%></td>
 				<td><%=mLitterModellist.get(i).getLittertypeID()%></td>
 				<td><%=mLitterModellist.get(i).getWeight()%></td>
 				<td><%=mLitterModellist.get(i).getLitterdate()%></td>

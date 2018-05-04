@@ -222,16 +222,16 @@
 		<div class="sidebar-collapse">
 			<ul class="nav" id="main-menu">
 
-				<li><a href="index.html"><i class="fa fa-dashboard"></i> 总览</a></li>
-				<li><a href="ui-elements.html"><i class="fa fa-desktop"></i>
+				<li><a href="index.jsp"><i class="fa fa-dashboard"></i> 总览</a></li>
+				<li><a href="ui-elements.jsp"><i class="fa fa-desktop"></i>
 						UI Elements</a></li>
-				<li><a href="chart.html"><i class="fa fa-bar-chart-o"></i>
+				<li><a href="chart.jsp"><i class="fa fa-bar-chart-o"></i>
 						图表</a></li>
-				<li><a href="tab-panel.html"><i class="fa fa-qrcode"></i>
+				<li><a href="tab-panel.jsp"><i class="fa fa-qrcode"></i>
 						Tabs & Panels</a></li>
 
 				<li><a href="table.jsp"><i class="fa fa-table"></i> 查询</a></li>
-				<li><a href="form.html"><i class="fa fa-edit"></i> 表单 </a></li>
+				<li><a href="form.jsp"><i class="fa fa-edit"></i> 表单 </a></li>
 
 
 				<li><a href="#"><i class="fa fa-sitemap"></i> Multi-Level
@@ -249,6 +249,8 @@
 					</ul></li>
 				<li><a class="active-menu" href="empty.jsp"><i
 						class="fa fa-fw fa-file"></i> 上传</a></li>
+
+				<li><a href="user.jsp"><i class="fa fa-edit"></i> 用户管理 </a></li>
 			</ul>
 
 		</div>
@@ -261,90 +263,85 @@
 					上传 <small>数据操作</small>
 				</h1>
 				<ol class="breadcrumb">
-					<li><a href="index.html">首页</a></li>
+					<li><a href="index.jsp">首页</a></li>
 					<li><a href="#">查询</a></li>
 					<li class="active">上传</li>
 				</ol>
 
 			</div>
-			<form method="post"
-				action="${pageContext.request.contextPath}/servlet/LoadFileServlet"
-				enctype="multipart/form-data">
-				<!-- litter data page content -->
-				<div class="breadcrumb" id="ld_page">
-					<center>
-						<div class="panel panel-default">
-							<div class="panel-heading">数据上传</div>
-							<div class="panel-body">
-								<div class="table-responsive">
-									<div align="center">
-										<input id="ld_file_path_id" type="file" name="ld_file_path">
-										<input type="submit" class="btn btn-primary" name="upload"
-											value="上传">
-									</div>
-									<%
-										if (mLitterModellist != null && mLitterModellist.size() != 0) {
-									%>
-									<div align="right">
-										<label><%=IsUploaded_message%> 共<%=mLitterModellist.size()%>条数据
-										</label>
-									</div>
-
-									<table class="table table-striped table-bordered table-hover">
-										<tr>
-											<th>编号</th>
-											<th>姓名</th>
-											<th>重量</th>
-											<th>类型</th>
-											<th>日期</th>
-										</tr>
-										<%
-											for (int i = 0; i < mLitterModellist.size(); i++) {
-										%>
-										<tr class="even gradeC">
-											<td class="center"><%=mLitterModellist.get(i).getUserID()%></td>
-											<td class="center">测试用户</td>
-											<td class="center"><%=mLitterModellist.get(i).getWeight()%>公斤</td>
+			<div class="row" id="page-inner">
+				<div class="col-lg-6">
+					<form method="post"
+						action="${pageContext.request.contextPath}/servlet/LoadFileServlet"
+						enctype="multipart/form-data">
+						<!-- litter data page content -->
+						<div class="breadcrumb" id="ld_page">
+							<center>
+								<div class="panel panel-default">
+									<div class="panel-heading">数据上传</div>
+									<div class="panel-body">
+										<div class="table-responsive">
+											<div align="center">
+												<input id="ld_file_path_id" type="file" name="ld_file_path">
+												<input type="submit" class="btn btn-primary" name="upload"
+													value="上传">
+											</div>
 											<%
-												if (mLitterModellist.get(i).getLittertypeID() == 0) {
+												if (mLitterModellist != null && mLitterModellist.size() != 0) {
 											%>
-											<td class="center">综合垃圾</td>
+											<div align="right">
+												<label><%=IsUploaded_message%> 共<%=mLitterModellist.size()%>条数据
+												</label>
+											</div>
+
+											<table class="table table-striped table-bordered table-hover">
+												<tr>
+													<th>编号</th>
+													<th>姓名</th>
+													<th>重量</th>
+													<th>类型</th>
+													<th>日期</th>
+												</tr>
+												<%
+													for (int i = 0; i < mLitterModellist.size(); i++) {
+												%>
+												<tr class="even gradeC">
+													<td class="center"><%=mLitterModellist.get(i).getUserId()%></td>
+													<td class="center">测试用户</td>
+													<td class="center"><%=mLitterModellist.get(i).getWeight()%>公斤</td>
+													<%
+														if (mLitterModellist.get(i).getLittertypeID() == 0) {
+													%>
+													<td class="center">综合垃圾</td>
+													<%
+														} else {
+													%><td class="center">可回收</td>
+													<%
+														}
+													%>
+													<td class="center"><%=mLitterModellist.get(i).getLitterdate()%></td>
+												</tr>
+												<%
+													}
+												%>
+											</table>
 											<%
 												} else {
-											%><td class="center">可回收</td>
+											%>
+											<div class="panel-heading">请选择数据源上传</div>
 											<%
 												}
 											%>
-											<td class="center"><%=mLitterModellist.get(i).getLitterdate()%></td>
-										</tr>
-										<%
-											}
-										%>
-									</table>
-									<%
-										} else {
-									%>
-									<div class="panel-heading">请选择数据源上传</div>
-									<%
-										}
-									%>
-								</div>
+										</div>
 
-							</div>
+									</div>
+								</div>
+							</center>
 						</div>
-					</center>
+					</form>
 				</div>
-			</form>
-			<div id="page-inner">
-				<footer>
-				<p>
-					Copyright &copy; 2016.Company name All rights reserved.More
-					Templates <a href="http://www.cssmoban.com/" target="_blank"
-						title="模板之家">模板之家</a> - Collect from <a
-						href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-				</p>
-				</footer>
 			</div>
+			<jsp:include page="company_bottom.jsp" flush="true" />
 			<!-- /. PAGE INNER  -->
 		</div>
 		<!-- /. PAGE WRAPPER  -->

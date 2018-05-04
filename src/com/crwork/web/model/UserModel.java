@@ -9,11 +9,15 @@ package com.crwork.web.model;
 public class UserModel {
 
 	private int ID;
-	private int userID;
+	private int userId;
 	private String userName;
-	private int villageID;
+	private int regionID;
+	/**
+	 * 0:超级管理员; 1:管理员;2:普通用户
+	 */
 	private int userType;
 	private String registeredDate;
+	private String psw;
 
 	public int getID() {
 		return ID;
@@ -23,12 +27,12 @@ public class UserModel {
 		ID = iD;
 	}
 
-	public int getUserID() {
-		return userID;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getUserName() {
@@ -39,12 +43,12 @@ public class UserModel {
 		this.userName = userName;
 	}
 
-	public int getVillageID() {
-		return villageID;
+	public int getRegionID() {
+		return regionID;
 	}
 
-	public void setVillageID(int villageID) {
-		this.villageID = villageID;
+	public void setRegionID(int regionID) {
+		this.regionID = regionID;
 	}
 
 	public int getUserType() {
@@ -61,6 +65,14 @@ public class UserModel {
 
 	public void setRegisteredDate(String registeredDate) {
 		this.registeredDate = registeredDate;
+	}
+
+	public String getPsw() {
+		return psw;
+	}
+
+	public void setPsw(String psw) {
+		this.psw = psw;
 	}
 
 }
