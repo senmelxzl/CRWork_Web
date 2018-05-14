@@ -214,7 +214,17 @@
 					class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
 			</a>
 				<ul class="dropdown-menu dropdown-user">
+					<%
+						if (mUserModel != null) {
+					%>
 					<li><a href="#"><i class="fa fa-user fa-fw"></i> <%=mUserModel.getUserName()%></a></li>
+					<%
+						} else {
+					%>
+					<li><a href="../crwork_login_forms/form-1/index.jsp"><i class="fa fa-user fa-fw"></i>请登录</a></li>
+					<%
+						}
+					%>
 					<li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a></li>
 					<li class="divider"></li>
 					<li><a href="../index.jsp"><i class="fa fa-sign-out fa-fw"></i>

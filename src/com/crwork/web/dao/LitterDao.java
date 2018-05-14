@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,7 +46,7 @@ public class LitterDao {
 			psql.setInt(1, mLitterModel.getUserId());
 			psql.setInt(2, mLitterModel.getLittertypeID());
 			psql.setDouble(3, mLitterModel.getWeight());
-			psql.setString(4, mLitterModel.getLitterdate());
+			psql.setDate(4, mLitterModel.getLitterdate());
 			psql.executeUpdate();
 			psql.close();
 			System.out.println("insertLitterData() insert data success!" + "\n");
@@ -79,7 +80,7 @@ public class LitterDao {
 				mLitterModel.setUserId(rs.getInt(2));
 				mLitterModel.setLittertypeID(rs.getInt(3));
 				mLitterModel.setWeight(rs.getDouble(4));
-				mLitterModel.setLitterdate(rs.getString(5));
+				mLitterModel.setLitterdate(rs.getDate(5));
 				lmList.add(mLitterModel);
 			}
 		} catch (SQLException e) {
@@ -110,7 +111,7 @@ public class LitterDao {
 				mLitterModel.setUserId(Integer.parseInt(list_temp[0]));
 				mLitterModel.setLittertypeID(Integer.parseInt(list_temp[1]));
 				mLitterModel.setWeight(Double.parseDouble(list_temp[2]));
-				mLitterModel.setLitterdate(DateUtil.getLitterDate());
+				mLitterModel.setLitterdate(DateUtil.getCurrentDate());
 				list.add(mLitterModel);
 				line++;
 			}
@@ -149,7 +150,7 @@ public class LitterDao {
 				mLitterModel.setUserId(Integer.parseInt(list_temp[0]));
 				mLitterModel.setLittertypeID(Integer.parseInt(list_temp[1]));
 				mLitterModel.setWeight(Double.parseDouble(list_temp[2]));
-				mLitterModel.setLitterdate(DateUtil.getLitterDate());
+				mLitterModel.setLitterdate(DateUtil.getCurrentDate());
 				list.add(mLitterModel);
 				line++;
 			}
@@ -182,6 +183,30 @@ public class LitterDao {
 			}
 		}
 		return true;
+	}
+
+	public ArrayList<LitterModel> getLitterListByDate(Date mStartDate, Date mEndDate) {
+		ArrayList<LitterModel> lmList = new ArrayList<LitterModel>();
+		try {
+			Statement sql = mConnection.createStatement();
+			ResultSet rs = sql.executeQuery(
+					"SELECT * FROM " + CRWorkJDBC.LITTER_TABLE + (mStartDate == null || mEndDate == null ? ";"
+							: " where litterdate >= '" + mStartDate + "' and litterdate <= '" + mEndDate + "';"));
+			LitterModel mLitterModel = null;
+			while (rs.next()) {
+				mLitterModel = new LitterModel();
+				mLitterModel.setID(rs.getInt(1));
+				mLitterModel.setUserId(rs.getInt(2));
+				mLitterModel.setLittertypeID(rs.getInt(3));
+				mLitterModel.setWeight(rs.getDouble(4));
+				mLitterModel.setLitterdate(rs.getDate(5));
+				lmList.add(mLitterModel);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lmList;
 	}
 
 	public void CloseConnection() {

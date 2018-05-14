@@ -8,7 +8,7 @@
 <%@ page language="java" import="com.crwork.web.dao.*"%>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>一起分 数据查询</title>
+<title>一起分 用户管理</title>
 <!-- Bootstrap Styles-->
 <link href="assets/css/bootstrap.css" rel="stylesheet" />
 <!-- FontAwesome Styles-->
@@ -272,7 +272,7 @@
 					<div class="col-md-12">
 						<!-- Advanced Tables -->
 						<div class="panel panel-default">
-							<div class="panel-heading">数据检索</div>
+							<div class="panel-heading">用户列表</div>
 							<div class="panel-body">
 								<div class="table-responsive">
 									<%
@@ -314,7 +314,7 @@
 												<%
 													}
 												%>
-												<td class="center"><center><%=mUserModellist.get(i).getRegisteredDate()%></center></td>
+												<td class="center"><center><%=mUserModellist.get(i).getUserRD().toString() %></center></td>
 
 												<td class="center"><center>
 														<label><a

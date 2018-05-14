@@ -8,7 +8,7 @@
 <%@ page language="java" import="com.crwork.web.model.*"%>
 <%@ page language="java" import="com.crwork.web.dao.*"%>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>后台管理</title>
+<title>一起分 数据上传</title>
 <!-- Bootstrap Styles-->
 <link href="assets/css/bootstrap.css" rel="stylesheet" />
 <!-- FontAwesome Styles-->
@@ -259,86 +259,89 @@
 		<!-- /. NAV SIDE  -->
 		<div id="page-wrapper">
 			<div class="header">
-				<h1 class="page-header">
-					上传 <small>数据操作</small>
-				</h1>
+				<h1 class="page-header">数据上传</h1>
 				<ol class="breadcrumb">
 					<li><a href="index.jsp">首页</a></li>
-					<li><a href="#">查询</a></li>
 					<li class="active">上传</li>
 				</ol>
 
 			</div>
-			<div class="row" id="page-inner">
-				<div class="col-lg-6">
-					<form method="post"
-						action="${pageContext.request.contextPath}/servlet/LoadFileServlet"
-						enctype="multipart/form-data">
-						<!-- litter data page content -->
-						<div class="breadcrumb" id="ld_page">
-							<center>
-								<div class="panel panel-default">
-									<div class="panel-heading">数据上传</div>
-									<div class="panel-body">
-										<div class="table-responsive">
-											<div align="center">
-												<input id="ld_file_path_id" type="file" name="ld_file_path">
-												<input type="submit" class="btn btn-primary" name="upload"
-													value="上传">
-											</div>
-											<%
-												if (mLitterModellist != null && mLitterModellist.size() != 0) {
-											%>
-											<div align="right">
-												<label><%=IsUploaded_message%> 共<%=mLitterModellist.size()%>条数据
-												</label>
-											</div>
+			<div id="page-inner">
 
-											<table class="table table-striped table-bordered table-hover">
-												<tr>
-													<th>编号</th>
-													<th>姓名</th>
-													<th>重量</th>
-													<th>类型</th>
-													<th>日期</th>
-												</tr>
-												<%
-													for (int i = 0; i < mLitterModellist.size(); i++) {
-												%>
-												<tr class="even gradeC">
-													<td class="center"><%=mLitterModellist.get(i).getUserId()%></td>
-													<td class="center">测试用户</td>
-													<td class="center"><%=mLitterModellist.get(i).getWeight()%>公斤</td>
-													<%
-														if (mLitterModellist.get(i).getLittertypeID() == 0) {
-													%>
-													<td class="center">综合垃圾</td>
-													<%
-														} else {
-													%><td class="center">可回收</td>
-													<%
-														}
-													%>
-													<td class="center"><%=mLitterModellist.get(i).getLitterdate()%></td>
-												</tr>
-												<%
-													}
-												%>
-											</table>
+				<div class="row">
+					<div class="col-md-12">
+						<!-- Advanced Tables -->
+						<div class="panel panel-default">
+							<div class="panel-heading">数据列表</div>
+							<div class="panel-body">
+
+								<form method="post"
+									action="${pageContext.request.contextPath}/servlet/LoadFileServlet"
+									enctype="multipart/form-data">
+									<div align="center">
+										<input id="ld_file_path_id" type="file" name="ld_file_path">
+										<input type="submit" class="btn btn-primary" name="upload"
+											value="上传">
+									</div>
+								</form>
+								<div class="table-responsive">
+									<%
+										if (mLitterModellist != null && mLitterModellist.size() != 0) {
+									%>
+									<div align="right">
+										<label><%=IsUploaded_message%> 共<%=mLitterModellist.size()%>条数据
+										</label>
+									</div>
+
+									<table class="table table-striped table-bordered table-hover">
+										<tr>
+											<th>编号</th>
+											<th>姓名</th>
+											<th>重量</th>
+											<th>类型</th>
+											<th>日期</th>
+										</tr>
+										<%
+											for (int i = 0; i < mLitterModellist.size(); i++) {
+										%>
+										<tr class="even gradeC">
+											<td class="center"><%=mLitterModellist.get(i).getUserId()%></td>
+											<td class="center">测试用户</td>
+											<td class="center"><%=mLitterModellist.get(i).getWeight()%>公斤</td>
+											<%
+												if (mLitterModellist.get(i).getLittertypeID() == 0) {
+											%>
+											<td class="center">综合垃圾</td>
 											<%
 												} else {
-											%>
-											<div class="panel-heading">请选择数据源上传</div>
+											%><td class="center">可回收</td>
 											<%
 												}
 											%>
-										</div>
+											<td class="center"><%=mLitterModellist.get(i).getLitterdate().toString() %></td>
+										</tr>
+										<%
+											}
+										%>
+									</table>
+									<%
+										} else {
+									%>
+									<div class="panel-heading">
+										<center>
+											<h4>请选择数据源上传</h4>
+										</center>
 
 									</div>
+									<%
+										}
+									%>
 								</div>
-							</center>
+
+							</div>
 						</div>
-					</form>
+						<!--End Advanced Tables -->
+					</div>
 				</div>
 			</div>
 			<jsp:include page="company_bottom.jsp" flush="true" />

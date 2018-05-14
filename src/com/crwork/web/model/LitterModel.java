@@ -1,5 +1,7 @@
 package com.crwork.web.model;
 
+import java.sql.Date;
+
 /**
  * LitterDomain
  * 
@@ -11,7 +13,7 @@ public class LitterModel {
 	private int userId;
 	private int littertypeID;
 	private Double weight;
-	private String litterdate;
+	private Date litterdate;
 
 	public int getID() {
 		return ID;
@@ -45,11 +47,11 @@ public class LitterModel {
 		this.weight = weight;
 	}
 
-	public String getLitterdate() {
+	public Date getLitterdate() {
 		return litterdate;
 	}
 
-	public void setLitterdate(String litterdate) {
+	public void setLitterdate(Date litterdate) {
 		this.litterdate = litterdate;
 	}
 }

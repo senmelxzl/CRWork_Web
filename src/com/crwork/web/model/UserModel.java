@@ -1,5 +1,7 @@
 package com.crwork.web.model;
 
+import java.sql.Date;
+
 /**
  * user model
  * 
@@ -16,7 +18,7 @@ public class UserModel {
 	 * 0:超级管理员; 1:管理员;2:普通用户
 	 */
 	private int userType;
-	private String registeredDate;
+	private Date userRD;
 	private String psw;
 
 	public int getID() {
@@ -59,12 +61,12 @@ public class UserModel {
 		this.userType = userType;
 	}
 
-	public String getRegisteredDate() {
-		return registeredDate;
+	public Date getUserRD() {
+		return userRD;
 	}
 
-	public void setRegisteredDate(String registeredDate) {
-		this.registeredDate = registeredDate;
+	public void setUserRD(Date userRD) {
+		this.userRD = userRD;
 	}
 
 	public String getPsw() {

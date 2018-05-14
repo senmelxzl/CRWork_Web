@@ -21,6 +21,14 @@
 	href="crwork_login_forms/form-1/assets/css/style.css">
 <title>一起分</title>
 </head>
+<%
+	LitterDao mLitterDao = new LitterDao();
+	ArrayList<LitterModel> mLitterModelList = mLitterDao.getLitterListByDate(DateUtil.getCurrentDate(),
+			DateUtil.getCurrentDate());
+	for (int i = 0; i < mLitterModelList.size(); i++) {
+		System.out.print("重量：" + mLitterModelList.get(i).getWeight() + "\n");
+	}
+%>
 <body>
 	<div>
 		<div class="inner-bg">

@@ -1,5 +1,7 @@
 package com.crwork.web.model;
 
+import java.sql.Date;
+
 /**
  * Village data
  * 
@@ -12,7 +14,7 @@ public class RegionModel {
 	private String regionName;
 	private int regionParentID;
 	private int statusMark;
-	private String regionRegisterDate;
+	private Date regionRD;
 
 	public int getID() {
 		return ID;
@@ -54,12 +56,12 @@ public class RegionModel {
 		this.statusMark = statusMark;
 	}
 
-	public String getRegionRegisterDate() {
-		return regionRegisterDate;
+	public Date getRegionRD() {
+		return regionRD;
 	}
 
-	public void setRegionRegisterDate(String regionRegisterDate) {
-		this.regionRegisterDate = regionRegisterDate;
+	public void setRegionRD(Date regionRD) {
+		this.regionRD = regionRD;
 	}
 
 }

@@ -39,16 +39,16 @@ public class CRWorkJDBC {
 	 * DB table create SQL
 	 */
 	public final static String USER_TABLE_SQL = "create table " + USER_TABLE
-			+ "(ID int auto_increment primary key not null,userId int not null,userName varchar(20),regionID int not null,userType int not null,registeredDate varchar(20) not null,psw varchar(20) not null)";
+			+ "(ID int auto_increment primary key not null,userId int not null,userName varchar(20),regionID int not null,userType int not null,userRD date not null,psw varchar(20) not null)";
 
 	public final static String LITTER_TABLE_SQL = "create table " + LITTER_TABLE
-			+ "(ID int auto_increment primary key not null,userId int not null,littertypeID int not null,weight double(16,2) not null,litterdate varchar(20) not null)";
+			+ "(ID int auto_increment primary key not null,userId int not null,littertypeID int not null,weight double(16,2) not null,litterdate date not null)";
 
 	public final static String LITTER_TYPE_TABLE_SQL = "create table " + LITTER_TYPE_TABLE
 			+ "(ID int auto_increment primary key not null,littertypeID int not null,typeName varchar(20),typemark int not null,price double(16,2) not null)";
 
 	public final static String REGION_TABLE_SQL = "create table " + REGION_TABLE
-			+ "(ID int auto_increment primary key not null,regionID int not null,regionName varchar(20),regionParentID int not null,statusMark int not null,regionRegisterDate varchar(20) not null)";
+			+ "(ID int auto_increment primary key not null,regionID int not null,regionName varchar(20),regionParentID int not null,statusMark int not null,regionRD date not null)";
 
 	public CRWorkJDBC() {
 		try {
@@ -58,7 +58,7 @@ public class CRWorkJDBC {
 			validateTableNameExist(USER_TABLE);
 			validateTableNameExist(LITTER_TABLE);
 			validateTableNameExist(LITTER_TYPE_TABLE);
-			validateTableNameExist(REGION_TABLE_SQL);
+			validateTableNameExist(REGION_TABLE);
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

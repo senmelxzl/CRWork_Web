@@ -1,7 +1,8 @@
 package com.crwork.web.util;
 
+import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * date util class
@@ -20,10 +21,15 @@ public class DateUtil {
 	 * 
 	 * @return dateNowStr
 	 */
-	public static String getLitterDate() {
+	public static Date getCurrentDate() {
+		java.util.Date utilDate = new java.util.Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date d = new Date();
-		String dateNowStr = sdf.format(d);
-		return dateNowStr;
+		try {
+			utilDate = sdf.parse(sdf.format(new java.util.Date()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new java.sql.Date(utilDate.getTime());
 	}
 }

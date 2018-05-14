@@ -45,7 +45,7 @@ public class UserDao {
 				mUserModel.setUserName(rs.getString(3));
 				mUserModel.setRegionID(rs.getInt(4));
 				mUserModel.setUserType(rs.getInt(5));
-				mUserModel.setRegisteredDate(rs.getString(6));
+				mUserModel.setUserRD(rs.getDate(6));
 				umlist.add(mUserModel);
 			}
 			mConnection.close();
@@ -76,7 +76,7 @@ public class UserDao {
 				mUserModel.setUserName(rs.getString(3));
 				mUserModel.setRegionID(rs.getInt(4));
 				mUserModel.setUserType(rs.getInt(5));
-				mUserModel.setRegisteredDate(rs.getString(6));
+				mUserModel.setUserRD(rs.getDate(6));
 				mUserModel.setPsw(rs.getString(7));
 			}
 			System.out.println("getUserInfor()  success!" + "\n");
@@ -98,13 +98,13 @@ public class UserDao {
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
 			String sql = "insert into " + CRWorkJDBC.USER_TABLE
-					+ " (userId,userName,regionID,userType,registeredDate,psw)" + "values(?,?,?,?,?,?)";
+					+ " (userId,userName,regionID,userType,userRD,psw)" + "values(?,?,?,?,?,?)";
 			PreparedStatement pst = mConnection.prepareStatement(sql);
 			pst.setInt(1, mUserModel.getUserId());
 			pst.setString(2, mUserModel.getUserName());
 			pst.setInt(3, mUserModel.getRegionID());
 			pst.setInt(4, mUserModel.getUserType());
-			pst.setString(5, mUserModel.getRegisteredDate());
+			pst.setDate(5, mUserModel.getUserRD());
 			pst.setString(6, mUserModel.getPsw());
 			pst.executeUpdate();
 			pst.close();
@@ -211,10 +211,10 @@ public class UserDao {
 	public boolean insertUserInforTest() {
 		UserModel mUserModelTest = new UserModel();
 		mUserModelTest.setUserId(198819);
-		mUserModelTest.setUserName("Tester");
+		mUserModelTest.setUserName("–ª’Ò¡÷");
 		mUserModelTest.setUserType(1);
 		mUserModelTest.setRegionID(12);
-		mUserModelTest.setRegisteredDate(DateUtil.getLitterDate());
+		mUserModelTest.setUserRD(DateUtil.getCurrentDate());
 		mUserModelTest.setPsw("xzl198819");
 		return insertUserInfor(mUserModelTest);
 	}
