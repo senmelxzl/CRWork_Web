@@ -23,12 +23,14 @@ public class LitterDao {
 
 	private Connection mConnection = null;
 	private CRWorkJDBC mCRWorkJDBC = null;
+	LitterTypeDao mLitterTypeDao = null;
 
 	public LitterDao() {
 		super();
 		// TODO Auto-generated constructor stub
 		mCRWorkJDBC = new CRWorkJDBC();
 		mConnection = mCRWorkJDBC.getCRWorkConn();
+		mLitterTypeDao = new LitterTypeDao();
 	}
 
 	/**
@@ -42,11 +44,12 @@ public class LitterDao {
 		try {
 			PreparedStatement psql;
 			psql = mConnection.prepareStatement("insert into " + CRWorkJDBC.LITTER_TABLE
-					+ " (userId,littertypeID,weight,litterdate)" + "values(?,?,?,?)");
+					+ " (userId,littertypeID,weight,tPrice,litterdate)" + "values(?,?,?,?,?)");
 			psql.setInt(1, mLitterModel.getUserId());
 			psql.setInt(2, mLitterModel.getLittertypeID());
 			psql.setDouble(3, mLitterModel.getWeight());
-			psql.setDate(4, mLitterModel.getLitterdate());
+			psql.setDouble(4, mLitterModel.gettPrice());
+			psql.setDate(5, mLitterModel.getLitterdate());
 			psql.executeUpdate();
 			psql.close();
 			System.out.println("insertLitterData() insert data success!" + "\n");
@@ -80,7 +83,8 @@ public class LitterDao {
 				mLitterModel.setUserId(rs.getInt(2));
 				mLitterModel.setLittertypeID(rs.getInt(3));
 				mLitterModel.setWeight(rs.getDouble(4));
-				mLitterModel.setLitterdate(rs.getDate(5));
+				mLitterModel.settPrice(rs.getDouble(5));
+				mLitterModel.setLitterdate(rs.getDate(6));
 				lmList.add(mLitterModel);
 			}
 		} catch (SQLException e) {
@@ -111,6 +115,8 @@ public class LitterDao {
 				mLitterModel.setUserId(Integer.parseInt(list_temp[0]));
 				mLitterModel.setLittertypeID(Integer.parseInt(list_temp[1]));
 				mLitterModel.setWeight(Double.parseDouble(list_temp[2]));
+				mLitterModel.settPrice(mLitterTypeDao.getTPriceByLitterTypeId(Integer.parseInt(list_temp[1]))
+						* Double.parseDouble(list_temp[2]));
 				mLitterModel.setLitterdate(DateUtil.getCurrentDate());
 				list.add(mLitterModel);
 				line++;
@@ -150,6 +156,8 @@ public class LitterDao {
 				mLitterModel.setUserId(Integer.parseInt(list_temp[0]));
 				mLitterModel.setLittertypeID(Integer.parseInt(list_temp[1]));
 				mLitterModel.setWeight(Double.parseDouble(list_temp[2]));
+				mLitterModel.settPrice(mLitterTypeDao.getTPriceByLitterTypeId(Integer.parseInt(list_temp[1]))
+						* Double.parseDouble(list_temp[2]));
 				mLitterModel.setLitterdate(DateUtil.getCurrentDate());
 				list.add(mLitterModel);
 				line++;
@@ -185,13 +193,24 @@ public class LitterDao {
 		return true;
 	}
 
-	public ArrayList<LitterModel> getLitterListByDate(Date mStartDate, Date mEndDate) {
+	/**
+	 * get litter by date and usernameF
+	 * 
+	 * @param UserName
+	 * @param mStartDate
+	 * @param mEndDate
+	 * @return
+	 */
+	public ArrayList<LitterModel> getLitterListByDate(String UserName, Date mStartDate, Date mEndDate) {
+		UserDao mUserDao = new UserDao();
+		int UserId = mUserDao.getUserIdByUserName(UserName);
 		ArrayList<LitterModel> lmList = new ArrayList<LitterModel>();
 		try {
 			Statement sql = mConnection.createStatement();
-			ResultSet rs = sql.executeQuery(
-					"SELECT * FROM " + CRWorkJDBC.LITTER_TABLE + (mStartDate == null || mEndDate == null ? ";"
-							: " where litterdate >= '" + mStartDate + "' and litterdate <= '" + mEndDate + "';"));
+			ResultSet rs = sql.executeQuery("SELECT * FROM " + CRWorkJDBC.LITTER_TABLE
+					+ (mStartDate == null || mEndDate == null ? ";"
+							: " where litterdate >= '" + mStartDate + "' and litterdate <= '" + mEndDate
+									+ "' and userId = '" + UserId + "';"));
 			LitterModel mLitterModel = null;
 			while (rs.next()) {
 				mLitterModel = new LitterModel();
@@ -199,7 +218,8 @@ public class LitterDao {
 				mLitterModel.setUserId(rs.getInt(2));
 				mLitterModel.setLittertypeID(rs.getInt(3));
 				mLitterModel.setWeight(rs.getDouble(4));
-				mLitterModel.setLitterdate(rs.getDate(5));
+				mLitterModel.settPrice(rs.getDouble(5));
+				mLitterModel.setLitterdate(rs.getDate(6));
 				lmList.add(mLitterModel);
 			}
 		} catch (SQLException e) {
@@ -207,6 +227,72 @@ public class LitterDao {
 			e.printStackTrace();
 		}
 		return lmList;
+	}
+
+	/**
+	 * get litter data union
+	 * 
+	 * @return
+	 */
+	public ArrayList<String[]> exportLitterData() {
+		ArrayList<String[]> mLitterList = new ArrayList<String[]>();
+		try {
+			Statement sql = mConnection.createStatement();
+			ResultSet rs = sql.executeQuery(
+					"SELECT cu.userId,cu.userName,cr.regionName,cl.weight,clt.typeName,cl.tPrice,cl.litterdate FROM crwork.crwork_user cu INNER JOIN crwork.crwork_litter cl On cu.userId = cl.userId INNER JOIN crwork.crwork_litter_type clt On cl.littertypeID = clt.littertypeID INNER JOIN crwork.crwork_region cr On cr.regionID = cu.regionID ;");
+			String[] mLitter = null;
+			while (rs.next()) {
+				mLitter = new String[7];
+				mLitter[0] = String.valueOf(rs.getInt(1));
+				mLitter[1] = rs.getString(2);
+				mLitter[2] = rs.getString(3);
+				mLitter[3] = String.valueOf(rs.getDouble(4));
+				mLitter[4] = rs.getString(5);
+				mLitter[5] = String.valueOf(rs.getDouble(6));
+				mLitter[6] = String.valueOf(rs.getDate(7));
+				mLitterList.add(mLitter);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return mLitterList;
+	}
+
+	/**
+	 * get litter data union
+	 * 
+	 * @param UserName
+	 * @param mStartDate
+	 * @param mEndDate
+	 * @return
+	 */
+	public ArrayList<String[]> exportLitterData(String UserName, Date mStartDate, Date mEndDate) {
+		ArrayList<String[]> mLitterList = new ArrayList<String[]>();
+		try {
+			Statement sql = mConnection.createStatement();
+			ResultSet rs = sql.executeQuery(
+					"SELECT cu.userId,cu.userName,cr.regionName,cl.weight,clt.typeName,cl.tPrice,cl.litterdate FROM crwork.crwork_user cu INNER JOIN crwork.crwork_litter cl On cu.userId = cl.userId INNER JOIN crwork.crwork_litter_type clt On cl.littertypeID = clt.littertypeID INNER JOIN crwork.crwork_region cr On cr.regionID = cu.regionID"
+							+ (mStartDate == null || mEndDate == null ? ";"
+									: " where cl.litterdate >= '" + mStartDate + "' and cl.litterdate <= '" + mEndDate
+											+ "' and cu.userName = '" + UserName + "';"));
+			String[] mLitter = null;
+			while (rs.next()) {
+				mLitter = new String[7];
+				mLitter[0] = String.valueOf(rs.getInt(1));
+				mLitter[1] = rs.getString(2);
+				mLitter[2] = rs.getString(3);
+				mLitter[3] = String.valueOf(rs.getDouble(4));
+				mLitter[4] = rs.getString(5);
+				mLitter[5] = String.valueOf(rs.getDouble(6));
+				mLitter[6] = String.valueOf(rs.getDate(7));
+				mLitterList.add(mLitter);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return mLitterList;
 	}
 
 	public void CloseConnection() {

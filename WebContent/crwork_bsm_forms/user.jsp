@@ -282,12 +282,12 @@
 										id="dataTables-example">
 										<thead>
 											<tr>
-												<th>用户编号</th>
-												<th>姓名</th>
-												<th>区域</th>
-												<th>权限</th>
-												<th>注册日期</th>
-												<th>操作</th>
+												<td align="center">用户编号</td>
+												<td align="center">姓名</td>
+												<td align="center">区域</td>
+												<td align="center">权限</td>
+												<td align="center">注册日期</td>
+												<td align="center">操作</td>
 											</tr>
 										</thead>
 										<tbody>
@@ -314,7 +314,7 @@
 												<%
 													}
 												%>
-												<td class="center"><center><%=mUserModellist.get(i).getUserRD().toString() %></center></td>
+												<td class="center"><center><%=mUserModellist.get(i).getUserRD().toString()%></center></td>
 
 												<td class="center"><center>
 														<label><a

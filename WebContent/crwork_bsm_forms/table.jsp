@@ -25,9 +25,20 @@
 	rel="stylesheet" />
 </head>
 <%
+	HttpSession mHttpSession = request.getSession();
+	String ld_mark = null;
 	LitterDao mLitterDao = new LitterDao();
+	ArrayList<String[]> mLitterModellist = null;
 	int userID = 0;
-	ArrayList<LitterModel> mLitterModellist = mLitterDao.queryLitterDataByUserID(userID);
+	if (mHttpSession != null) {
+		ld_mark = (String) mHttpSession.getAttribute("ld_mark");
+		mLitterModellist = (ArrayList<String[]>) mHttpSession.getAttribute("mLitterModelList");
+		mHttpSession.setMaxInactiveInterval(1800);
+		if (mLitterModellist == null || mLitterModellist.size() == 0) {
+			mLitterModellist = mLitterDao.exportLitterData("", null, null);
+		}
+	}
+	UserDao mUserDao = new UserDao();
 %>
 <body>
 	<div id="wrapper">
@@ -275,8 +286,54 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h4>数据列表</h4>
-								开始 <input type="date" id="ld_start_date" /> 结束 <input
-									type="date" id="ld_start_date" />
+								<form method="post"
+									action="${pageContext.request.contextPath}/servlet/LitterServlet">
+									<table>
+										<tr>
+											<th><h5>用户名：</h5></th>
+											<th><input type="text" name="ld_username"
+												id="ld_username" /></th>
+											<th><h5>开始：</h5></th>
+											<th><input type="date" name="ld_start_date"
+												id="ld_start_date" /></th>
+											<th><h5>结束：</h5></th>
+											<th><input type="date" name="ld_end_date"
+												id="ld_end_date" /></th>
+											<th><input type="submit" class="btn btn-primary"
+												name="ld_search" id="" value="查询">
+											<th>
+											<th><input type="submit" class="btn btn-primary"
+												name="ld_export" id="" value="导出">
+											<th>
+												<%
+													if (ld_mark != null && !ld_mark.equals("")) {
+
+														if (ld_mark.equals("0")) {
+												%>
+											
+											<th><h5>查询完成</h5>
+											<th>
+												<%
+													} else if (ld_mark.equals("1")) {
+												%>
+											
+											<th><h5>导出成功</h5>
+											<th>
+												<%
+													} else if (ld_mark.equals("2")) {
+												%>
+											
+											<th><h5>请填写查询条件</h5>
+											<th>
+												<%
+													}
+													}
+												%>
+											
+										</tr>
+									</table>
+
+								</form>
 							</div>
 							<div class="panel-body">
 								<div class="table-responsive">
@@ -287,11 +344,13 @@
 										id="dataTables-example">
 										<thead>
 											<tr>
-												<th>编号</th>
-												<th>姓名</th>
-												<th>重量</th>
-												<th>类型</th>
-												<th>日期</th>
+												<td align="center">编号</td>
+												<td align="center">姓名</td>
+												<td align="center">区域</td>
+												<td align="center">重量</td>
+												<td align="center">类型</td>
+												<td align="center">费用-/收入+(元)</td>
+												<td align="center">日期</td>
 											</tr>
 										</thead>
 										<tbody>
@@ -299,20 +358,13 @@
 												for (int i = 0; i < mLitterModellist.size(); i++) {
 											%>
 											<tr class="even gradeC">
-												<td class="center"><%=mLitterModellist.get(i).getUserId()%></td>
-												<td class="center">测试用户</td>
-												<td class="center"><%=mLitterModellist.get(i).getWeight()%>公斤</td>
-												<%
-													if (mLitterModellist.get(i).getLittertypeID() == 0) {
-												%>
-												<td class="center">综合垃圾</td>
-												<%
-													} else {
-												%><td class="center">可回收</td>
-												<%
-													}
-												%>
-												<td class="center"><%=mLitterModellist.get(i).getLitterdate().toString()%></td>
+												<td align="center"><center><%=mLitterModellist.get(i)[0]%></center></td>
+												<td align="center"><center><%=mLitterModellist.get(i)[1]%></center></td>
+												<td align="center"><center><%=mLitterModellist.get(i)[2]%></center></td>
+												<td align="center"><center><%=mLitterModellist.get(i)[3]%></center></td>
+												<td align="center"><center><%=mLitterModellist.get(i)[4]%></center></td>
+												<td align="center"><center><%=mLitterModellist.get(i)[5]%></center></td>
+												<td align="center"><center><%=mLitterModellist.get(i)[6]%></center></td>
 											</tr>
 											<%
 												}

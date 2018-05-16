@@ -97,8 +97,8 @@ public class UserDao {
 	public boolean insertUserInfor(UserModel mUserModel) {
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
-			String sql = "insert into " + CRWorkJDBC.USER_TABLE
-					+ " (userId,userName,regionID,userType,userRD,psw)" + "values(?,?,?,?,?,?)";
+			String sql = "insert into " + CRWorkJDBC.USER_TABLE + " (userId,userName,regionID,userType,userRD,psw)"
+					+ "values(?,?,?,?,?,?)";
 			PreparedStatement pst = mConnection.prepareStatement(sql);
 			pst.setInt(1, mUserModel.getUserId());
 			pst.setString(2, mUserModel.getUserName());
@@ -217,5 +217,60 @@ public class UserDao {
 		mUserModelTest.setUserRD(DateUtil.getCurrentDate());
 		mUserModelTest.setPsw("xzl198819");
 		return insertUserInfor(mUserModelTest);
+	}
+
+	/**
+	 * get userId by Name
+	 * 
+	 * @param userName
+	 * @return
+	 */
+	public int getUserIdByUserName(String userName) {
+		// TODO Auto-generated method stub
+		int UserId = 0;
+		mConnection = mCRWorkJDBC.getCRWorkConn();
+		try {
+			String sql = "select userId from " + CRWorkJDBC.USER_TABLE + " where userName=?";
+			PreparedStatement psmt = mConnection.prepareStatement(sql);
+			psmt.setString(1, userName);
+			ResultSet rs = psmt.executeQuery();
+			while (rs.next()) {
+				UserId = rs.getInt(1);
+			}
+			System.out.println("getUserIdByUserName()  success!" + UserId + "\n");
+			mConnection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("getUserIdByUserName() completed!" + UserId + "\n");
+		return UserId;
+	}
+
+	/**
+	 * get userId by Name
+	 * 
+	 * @param userName
+	 * @return
+	 */
+	public String getUserNameByUserId(int userId) {
+		// TODO Auto-generated method stub
+		String UserName = "";
+		mConnection = mCRWorkJDBC.getCRWorkConn();
+		try {
+			String sql = "select userName from " + CRWorkJDBC.USER_TABLE + " where userId=?";
+			PreparedStatement psmt = mConnection.prepareStatement(sql);
+			psmt.setInt(1, userId);
+			ResultSet rs = psmt.executeQuery();
+			while (rs.next()) {
+				UserName = rs.getString(1);
+			}
+			System.out.println("getUserIdByUserName()  success!" + UserName + "\n");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("getUserIdByUserName() completed!" + UserName + "\n");
+		return UserName;
 	}
 }

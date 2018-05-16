@@ -30,6 +30,7 @@
 		mLitterModellist = (ArrayList<LitterModel>) mHttpSession.getAttribute("mLitterModellist");
 
 	}
+	UserDao mUserDao = new UserDao();
 %>
 <body>
 	<div id="wrapper">
@@ -278,11 +279,16 @@
 								<form method="post"
 									action="${pageContext.request.contextPath}/servlet/LoadFileServlet"
 									enctype="multipart/form-data">
-									<div align="center">
-										<input id="ld_file_path_id" type="file" name="ld_file_path">
-										<input type="submit" class="btn btn-primary" name="upload"
-											value="上传">
-									</div>
+									<center>
+										<table>
+											<tr>
+												<th><input id="ld_file_path_id" type="file"
+													name="ld_file_path"></th>
+												<th><input id="ld_upload" type="submit"
+													class="btn btn-primary" name="ld_upload" value="上传"></th>
+											</tr>
+										</table>
+									</center>
 								</form>
 								<div class="table-responsive">
 									<%
@@ -292,33 +298,25 @@
 										<label><%=IsUploaded_message%> 共<%=mLitterModellist.size()%>条数据
 										</label>
 									</div>
-
 									<table class="table table-striped table-bordered table-hover">
 										<tr>
-											<th>编号</th>
-											<th>姓名</th>
-											<th>重量</th>
-											<th>类型</th>
-											<th>日期</th>
+											<td align="center">编号</td>
+											<td align="center">姓名</td>
+											<td align="center">重量</td>
+											<td align="center">类型</td>
+											<td align="center">费用-/收入+(元)</td>
+											<td align="center">日期</td>
 										</tr>
 										<%
 											for (int i = 0; i < mLitterModellist.size(); i++) {
 										%>
 										<tr class="even gradeC">
-											<td class="center"><%=mLitterModellist.get(i).getUserId()%></td>
-											<td class="center">测试用户</td>
-											<td class="center"><%=mLitterModellist.get(i).getWeight()%>公斤</td>
-											<%
-												if (mLitterModellist.get(i).getLittertypeID() == 0) {
-											%>
-											<td class="center">综合垃圾</td>
-											<%
-												} else {
-											%><td class="center">可回收</td>
-											<%
-												}
-											%>
-											<td class="center"><%=mLitterModellist.get(i).getLitterdate().toString() %></td>
+											<td align="center"><%=mLitterModellist.get(i).getUserId()%></td>
+											<td align="center"><%=mUserDao.getUserNameByUserId(mLitterModellist.get(i).getUserId())%></td>
+											<td align="center"><%=mLitterModellist.get(i).getWeight()%>公斤</td>
+											<td align="center"><%=(mLitterModellist.get(i).getLittertypeID() == 0 ? "综合垃圾" : "可回收")%></td>
+											<td align="center"><%=(double) Math.round(mLitterModellist.get(i).gettPrice() * 100) / 100%></td>
+											<td align="center"><%=mLitterModellist.get(i).getLitterdate().toString()%></td>
 										</tr>
 										<%
 											}
@@ -327,15 +325,14 @@
 									<%
 										} else {
 									%>
-									<div class="panel-heading">
-										<center>
-											<h4>请选择数据源上传</h4>
-										</center>
-
+									<div align="center">
+										<label>请选择数据源上传 </label>
 									</div>
 									<%
 										}
 									%>
+
+
 								</div>
 
 							</div>
