@@ -3,7 +3,7 @@ package com.crwork.web.util;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class FileUtil {
+public class JDBCUtil {
 
 	public static final String[] sqlpro_value = readsqlpro();
 
@@ -11,7 +11,7 @@ public class FileUtil {
 		Properties sqlprop = new Properties();
 		String[] message = new String[4];
 		try {
-			InputStream sqlpropin = FileUtil.class.getClassLoader().getResourceAsStream("jdbc.properties");
+			InputStream sqlpropin = JDBCUtil.class.getClassLoader().getResourceAsStream("jdbc.properties");
 			sqlprop.load(sqlpropin);
 			message[0] = sqlprop.getProperty("jdbc_driverClassName");
 			message[1] = sqlprop.getProperty("jdbc_url");

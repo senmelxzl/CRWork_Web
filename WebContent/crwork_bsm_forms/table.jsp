@@ -347,8 +347,9 @@
 												<td align="center">编号</td>
 												<td align="center">姓名</td>
 												<td align="center">区域</td>
-												<td align="center">重量</td>
+												<td align="center">重量(kg)</td>
 												<td align="center">类型</td>
+												<td align="center">类型标号</td>
 												<td align="center">费用-/收入+(元)</td>
 												<td align="center">日期</td>
 											</tr>
@@ -358,13 +359,13 @@
 												for (int i = 0; i < mLitterModellist.size(); i++) {
 											%>
 											<tr class="even gradeC">
-												<td align="center"><center><%=mLitterModellist.get(i)[0]%></center></td>
-												<td align="center"><center><%=mLitterModellist.get(i)[1]%></center></td>
-												<td align="center"><center><%=mLitterModellist.get(i)[2]%></center></td>
-												<td align="center"><center><%=mLitterModellist.get(i)[3]%></center></td>
-												<td align="center"><center><%=mLitterModellist.get(i)[4]%></center></td>
-												<td align="center"><center><%=mLitterModellist.get(i)[5]%></center></td>
-												<td align="center"><center><%=mLitterModellist.get(i)[6]%></center></td>
+												<%
+													for (int j = 0; j < mLitterModellist.get(i).length; j++) {
+												%>
+												<td align="center"><center><%=mLitterModellist.get(i)[j]%></center></td>
+												<%
+													}
+												%>
 											</tr>
 											<%
 												}

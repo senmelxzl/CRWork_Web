@@ -54,35 +54,6 @@
 				</div>
 			</div>
 		</div>
-		<table>
-			<tr>
-				<th>编号</th>
-				<th>姓名</th>
-				<th>区域</th>
-				<th>重量</th>
-				<th>类型</th>
-				<th>价格</th>
-				<th>日期</th>
-			</tr>
-			<%
-				LitterDao mLitterDao = new LitterDao();
-				ArrayList<String[]> mlitterList = mLitterDao.exportLitterData();
-				System.out.print("litter data:" + mlitterList.size());
-				for (int i = 0; i < mlitterList.size(); i++) {
-			%>
-			<tr>
-				<th><%=mlitterList.get(i)[0]%></th>
-				<th><%=mlitterList.get(i)[1]%></th>
-				<th><%=mlitterList.get(i)[2]%></th>
-				<th><%=mlitterList.get(i)[3]%></th>
-				<th><%=mlitterList.get(i)[4]%></th>
-				<th><%=mlitterList.get(i)[5]%></th>
-				<th><%=mlitterList.get(i)[6]%></th>
-			</tr>
-			<%
-				}
-			%>
-		</table>
 	</div>
 	<jsp:include page="crwork_bsm_forms/company_bottom.jsp" flush="true" />
 </body>

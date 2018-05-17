@@ -239,17 +239,18 @@ public class LitterDao {
 		try {
 			Statement sql = mConnection.createStatement();
 			ResultSet rs = sql.executeQuery(
-					"SELECT cu.userId,cu.userName,cr.regionName,cl.weight,clt.typeName,cl.tPrice,cl.litterdate FROM crwork.crwork_user cu INNER JOIN crwork.crwork_litter cl On cu.userId = cl.userId INNER JOIN crwork.crwork_litter_type clt On cl.littertypeID = clt.littertypeID INNER JOIN crwork.crwork_region cr On cr.regionID = cu.regionID ;");
+					"SELECT cu.userId,cu.userName,cr.regionName,cl.weight,clt.typeName,cl.littertypeID,cl.tPrice,cl.litterdate FROM crwork.crwork_user cu INNER JOIN crwork.crwork_litter cl On cu.userId = cl.userId INNER JOIN crwork.crwork_litter_type clt On cl.littertypeID = clt.littertypeID INNER JOIN crwork.crwork_region cr On cr.regionID = cu.regionID ;");
 			String[] mLitter = null;
 			while (rs.next()) {
-				mLitter = new String[7];
+				mLitter = new String[8];
 				mLitter[0] = String.valueOf(rs.getInt(1));
 				mLitter[1] = rs.getString(2);
 				mLitter[2] = rs.getString(3);
 				mLitter[3] = String.valueOf(rs.getDouble(4));
 				mLitter[4] = rs.getString(5);
-				mLitter[5] = String.valueOf(rs.getDouble(6));
-				mLitter[6] = String.valueOf(rs.getDate(7));
+				mLitter[5] = String.valueOf(rs.getInt(6));
+				mLitter[6] = String.valueOf(rs.getDouble(7));
+				mLitter[7] = String.valueOf(rs.getDate(8));
 				mLitterList.add(mLitter);
 			}
 		} catch (SQLException e) {
@@ -272,20 +273,21 @@ public class LitterDao {
 		try {
 			Statement sql = mConnection.createStatement();
 			ResultSet rs = sql.executeQuery(
-					"SELECT cu.userId,cu.userName,cr.regionName,cl.weight,clt.typeName,cl.tPrice,cl.litterdate FROM crwork.crwork_user cu INNER JOIN crwork.crwork_litter cl On cu.userId = cl.userId INNER JOIN crwork.crwork_litter_type clt On cl.littertypeID = clt.littertypeID INNER JOIN crwork.crwork_region cr On cr.regionID = cu.regionID"
+					"SELECT cu.userId,cu.userName,cr.regionName,cl.weight,clt.typeName,cl.littertypeID,cl.tPrice,cl.litterdate FROM crwork.crwork_user cu INNER JOIN crwork.crwork_litter cl On cu.userId = cl.userId INNER JOIN crwork.crwork_litter_type clt On cl.littertypeID = clt.littertypeID INNER JOIN crwork.crwork_region cr On cr.regionID = cu.regionID"
 							+ (mStartDate == null || mEndDate == null ? ";"
 									: " where cl.litterdate >= '" + mStartDate + "' and cl.litterdate <= '" + mEndDate
 											+ "' and cu.userName = '" + UserName + "';"));
 			String[] mLitter = null;
 			while (rs.next()) {
-				mLitter = new String[7];
+				mLitter = new String[8];
 				mLitter[0] = String.valueOf(rs.getInt(1));
 				mLitter[1] = rs.getString(2);
 				mLitter[2] = rs.getString(3);
 				mLitter[3] = String.valueOf(rs.getDouble(4));
 				mLitter[4] = rs.getString(5);
-				mLitter[5] = String.valueOf(rs.getDouble(6));
-				mLitter[6] = String.valueOf(rs.getDate(7));
+				mLitter[5] = String.valueOf(rs.getInt(6));
+				mLitter[6] = String.valueOf(rs.getDouble(7));
+				mLitter[7] = String.valueOf(rs.getDate(8));
 				mLitterList.add(mLitter);
 			}
 		} catch (SQLException e) {
