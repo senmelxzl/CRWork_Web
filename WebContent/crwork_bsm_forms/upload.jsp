@@ -224,15 +224,15 @@
 			<ul class="nav" id="main-menu">
 
 				<li><a href="index.jsp"><i class="fa fa-dashboard"></i> 总览</a></li>
-				<li><a href="ui-elements.jsp"><i class="fa fa-desktop"></i>
-						UI Elements</a></li>
+				<!--<li><a href="ui-elements.jsp"><i class="fa fa-desktop"></i>
+						UI Elements</a></li> -->
 				<li><a href="chart.jsp"><i class="fa fa-bar-chart-o"></i>
 						图表</a></li>
-				<li><a href="tab-panel.jsp"><i class="fa fa-qrcode"></i>
-						Tabs & Panels</a></li>
+				<!--<li><a href="tab-panel.jsp"><i class="fa fa-qrcode"></i>
+						Tabs & Panels</a></li> -->
 
 				<li><a href="table.jsp"><i class="fa fa-table"></i> 查询</a></li>
-				<li><a href="form.jsp"><i class="fa fa-edit"></i> 表单 </a></li>
+				<!--<li><a href="form.jsp"><i class="fa fa-edit"></i> 表单 </a></li>
 
 
 				<li><a href="#"><i class="fa fa-sitemap"></i> Multi-Level
@@ -247,8 +247,8 @@
 								<li><a href="#">Third Level Link</a></li>
 
 							</ul></li>
-					</ul></li>
-				<li><a class="active-menu" href="empty.jsp"><i
+					</ul></li> -->
+				<li><a class="active-menu" href="upload.jsp"><i
 						class="fa fa-fw fa-file"></i> 上传</a></li>
 
 				<li><a href="user.jsp"><i class="fa fa-edit"></i> 用户管理 </a></li>

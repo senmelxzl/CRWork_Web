@@ -26,7 +26,7 @@
 </head>
 <%
 	UserDao mUserDao = new UserDao();
-	ArrayList<UserModel> mUserModellist = mUserDao.getUserList();
+	ArrayList<String[]> mUserModellist = mUserDao.getUserList();
 %>
 <body>
 	<div id="wrapper">
@@ -221,15 +221,15 @@
 			<ul class="nav" id="main-menu">
 
 				<li><a href="index.jsp"><i class="fa fa-dashboard"></i> 总览</a></li>
-				<li><a href="ui-elements.jsp"><i class="fa fa-desktop"></i>
-						UI Elements</a></li>
+				<!--<li><a href="ui-elements.jsp"><i class="fa fa-desktop"></i>
+						UI Elements</a></li>-->
 				<li><a href="chart.jsp"><i class="fa fa-bar-chart-o"></i>
 						图表</a></li>
-				<li><a href="tab-panel.jsp"><i class="fa fa-qrcode"></i>
-						Tabs & Panels</a></li>
+				<!--<li><a href="tab-panel.jsp"><i class="fa fa-qrcode"></i>
+						Tabs & Panels</a></li>-->
 
 				<li><a href="table.jsp"><i class="fa fa-table"></i> 查询</a></li>
-				<li><a href="form.jsp"><i class="fa fa-edit"></i> 表单 </a></li>
+				<!--<li><a href="form.jsp"><i class="fa fa-edit"></i> 表单 </a></li>
 
 
 				<li><a href="#"><i class="fa fa-sitemap"></i> Multi-Level
@@ -244,8 +244,8 @@
 								<li><a href="#">Third Level Link</a></li>
 
 							</ul></li>
-					</ul></li>
-				<li><a href="empty.jsp"><i class="fa fa-fw fa-file"></i> 上传</a>
+					</ul></li>-->
+				<li><a href="upload.jsp"><i class="fa fa-fw fa-file"></i> 上传</a>
 				</li>
 
 				<li><a href="user.jsp" class="active-menu"><i
@@ -296,12 +296,12 @@
 													for (int i = 0; i < mUserModellist.size(); i++) {
 											%>
 											<tr class="even gradeC">
-												<td class="center"><center><%=mUserModellist.get(i).getUserId()%></center></td>
-												<td class="center"><center><%=mUserModellist.get(i).getUserName()%></center></td>
-												<td class="center"><center><%=mUserModellist.get(i).getRegionID()%></center></td>
+												<td class="center"><center><%=mUserModellist.get(i)[0]%></center></td>
+												<td class="center"><center><%=mUserModellist.get(i)[1]%></center></td>
+												<td class="center"><center><%=mUserModellist.get(i)[2]%></center></td>
 												<%
-													userType = mUserModellist.get(i).getUserType();
-															if (userType == 0) {
+													userType = Integer.parseInt(mUserModellist.get(i)[3]);
+															if (userType == 2) {
 												%>
 												<td class="center"><center>普通用户</center></td>
 												<%
@@ -314,7 +314,7 @@
 												<%
 													}
 												%>
-												<td class="center"><center><%=mUserModellist.get(i).getUserRD().toString()%></center></td>
+												<td class="center"><center><%=mUserModellist.get(i)[4]%></center></td>
 
 												<td class="center"><center>
 														<label><a

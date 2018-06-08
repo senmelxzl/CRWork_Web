@@ -30,12 +30,15 @@
 	LitterDao mLitterDao = new LitterDao();
 	ArrayList<String[]> mLitterModellist = null;
 	int userID = 0;
+	System.out.print("step :1" + "\n");
 	if (mHttpSession != null) {
 		ld_mark = (String) mHttpSession.getAttribute("ld_mark");
+		System.out.print("step :2" + "\n");
 		mLitterModellist = (ArrayList<String[]>) mHttpSession.getAttribute("mLitterModelList");
 		mHttpSession.setMaxInactiveInterval(1800);
 		if (mLitterModellist == null || mLitterModellist.size() == 0) {
-			mLitterModellist = mLitterDao.exportLitterData("", null, null);
+			System.out.print("step :3" + "\n");
+			mLitterModellist = mLitterDao.exportLitterData("", "", null, null);
 		}
 	}
 	UserDao mUserDao = new UserDao();
@@ -233,16 +236,16 @@
 			<ul class="nav" id="main-menu">
 
 				<li><a href="index.jsp"><i class="fa fa-dashboard"></i> 总览</a></li>
-				<li><a href="ui-elements.jsp"><i class="fa fa-desktop"></i>
+				<!--<li><a href="ui-elements.jsp"><i class="fa fa-desktop"></i>-->
 						UI Elements</a></li>
 				<li><a href="chart.jsp"><i class="fa fa-bar-chart-o"></i>
 						图表</a></li>
-				<li><a href="tab-panel.jsp"><i class="fa fa-qrcode"></i>
-						Tabs & Panels</a></li>
+				<!--<li><a href="tab-panel.jsp"><i class="fa fa-qrcode"></i>
+						Tabs & Panels</a></li>-->
 
 				<li><a href="table.jsp" class="active-menu"><i
 						class="fa fa-table"></i> 查询</a></li>
-				<li><a href="form.jsp"><i class="fa fa-edit"></i> 表单 </a></li>
+				<!--<li><a href="form.jsp"><i class="fa fa-edit"></i> 表单 </a></li>
 
 
 				<li><a href="#"><i class="fa fa-sitemap"></i> Multi-Level
@@ -257,8 +260,8 @@
 								<li><a href="#">Third Level Link</a></li>
 
 							</ul></li>
-					</ul></li>
-				<li><a href="empty.jsp"><i class="fa fa-fw fa-file"></i> 上传</a>
+					</ul></li>-->
+				<li><a href="upload.jsp"><i class="fa fa-fw fa-file"></i> 上传</a>
 				</li>
 
 				<li><a href="user.jsp"><i class="fa fa-edit"></i> 用户管理 </a></li>
@@ -293,24 +296,14 @@
 											<th><h5>用户名：</h5></th>
 											<th><input type="text" name="ld_username"
 												id="ld_username" /></th>
-											<th><h5>开始：</h5></th>
-											<th><input type="date" name="ld_start_date"
-												id="ld_start_date" /></th>
-											<th><h5>结束：</h5></th>
-											<th><input type="date" name="ld_end_date"
-												id="ld_end_date" /></th>
-											<th><input type="submit" class="btn btn-primary"
-												name="ld_search" id="" value="查询">
-											<th>
-											<th><input type="submit" class="btn btn-primary"
-												name="ld_export" id="" value="导出">
-											<th>
-												<%
-													if (ld_mark != null && !ld_mark.equals("")) {
+											<th><h5>区域：</h5></th>
+											<th><input type="text" name="ld_region" id="ld_region" /></th>
+											<%
+												if (ld_mark != null && !ld_mark.equals("")) {
 
-														if (ld_mark.equals("0")) {
-												%>
-											
+													if (ld_mark.equals("0")) {
+											%>
+
 											<th><h5>查询完成</h5>
 											<th>
 												<%
@@ -331,6 +324,23 @@
 												%>
 											
 										</tr>
+										<tr>
+											<th><h5>起始日期：</h5></th>
+											<th><input type="date" name="ld_start_date"
+												id="ld_start_date" /></th>
+											<th><h5>结束日期：</h5></th>
+											<th><input type="date" name="ld_end_date"
+												id="ld_end_date" /></th>
+											<th><input type="submit" class="btn btn-primary"
+												name="ld_search" id="" value="查询">
+											<th>
+											<th><input type="submit" class="btn btn-primary"
+												name="ld_export" id="" value="导出">
+											<th>
+										</tr>
+
+
+
 									</table>
 
 								</form>

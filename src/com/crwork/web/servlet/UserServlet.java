@@ -44,10 +44,10 @@ public class UserServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		int userID = Integer.parseInt(request.getParameter("userID"));
+		String userId = request.getParameter("userId");
 		String psw = request.getParameter("password");
 		UserDao mUserDao = new UserDao();
-		UserModel mUserModel = mUserDao.getUserInfor(userID);
+		UserModel mUserModel = mUserDao.getUserInfor(userId);
 		String Redirect_url = "/crwork_login_forms/form-1/index.jsp";
 		if (mUserModel != null && mUserModel.getPsw().equals(psw)) {
 			session.setAttribute("mUserModel", mUserModel);

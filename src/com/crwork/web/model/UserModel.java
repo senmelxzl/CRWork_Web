@@ -11,14 +11,14 @@ import java.sql.Date;
 public class UserModel {
 
 	private int ID;
-	private int userId;
+	private String userId;
 	private String userName;
 	private int regionID;
 	/**
 	 * 0:超级管理员; 1:管理员;2:普通用户
 	 */
 	private int userType;
-	private Date userRD;
+	private Date registeredDate;
 	private String psw;
 
 	public int getID() {
@@ -29,11 +29,11 @@ public class UserModel {
 		ID = iD;
 	}
 
-	public int getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
@@ -61,12 +61,12 @@ public class UserModel {
 		this.userType = userType;
 	}
 
-	public Date getUserRD() {
-		return userRD;
+	public Date getRegisteredDate() {
+		return registeredDate;
 	}
 
-	public void setUserRD(Date userRD) {
-		this.userRD = userRD;
+	public void setRegisteredDate(Date registeredDate) {
+		this.registeredDate = registeredDate;
 	}
 
 	public String getPsw() {

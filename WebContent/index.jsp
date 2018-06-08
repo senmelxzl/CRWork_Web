@@ -55,6 +55,7 @@
 			</div>
 		</div>
 	</div>
-	<jsp:include page="crwork_bsm_forms/company_bottom.jsp" flush="true" />
+	<div class="footer">
+		<jsp:include page="crwork_bsm_forms/company_bottom.jsp" flush="true" /></div>
 </body>
 </html>

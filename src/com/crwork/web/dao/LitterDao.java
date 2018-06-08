@@ -45,7 +45,7 @@ public class LitterDao {
 			PreparedStatement psql;
 			psql = mConnection.prepareStatement("insert into " + CRWorkJDBC.LITTER_TABLE
 					+ " (userId,littertypeID,weight,tPrice,litterdate)" + "values(?,?,?,?,?)");
-			psql.setInt(1, mLitterModel.getUserId());
+			psql.setString(1, mLitterModel.getUserId());
 			psql.setInt(2, mLitterModel.getLittertypeID());
 			psql.setDouble(3, mLitterModel.getWeight());
 			psql.setDouble(4, mLitterModel.gettPrice());
@@ -70,17 +70,17 @@ public class LitterDao {
 	 * @param userID
 	 * @return
 	 */
-	public ArrayList<LitterModel> queryLitterDataByUserID(int userId) {
+	public ArrayList<LitterModel> queryLitterDataByUserID(String userId) {
 		ArrayList<LitterModel> lmList = new ArrayList<LitterModel>();
 		try {
 			Statement sql = mConnection.createStatement();
 			ResultSet rs = sql.executeQuery(
-					"SELECT * FROM " + CRWorkJDBC.LITTER_TABLE + (userId == 0 ? "" : "where userId=" + userId));
+					"SELECT * FROM " + CRWorkJDBC.LITTER_TABLE + (userId.equals("0") ? "" : " where userId=" + userId));
 			LitterModel mLitterModel = null;
 			while (rs.next()) {
 				mLitterModel = new LitterModel();
 				mLitterModel.setID(rs.getInt(1));
-				mLitterModel.setUserId(rs.getInt(2));
+				mLitterModel.setUserId(rs.getString(2));
 				mLitterModel.setLittertypeID(rs.getInt(3));
 				mLitterModel.setWeight(rs.getDouble(4));
 				mLitterModel.settPrice(rs.getDouble(5));
@@ -112,7 +112,7 @@ public class LitterDao {
 				System.out.println(TAG + line + ":" + temp);
 				LitterModel mLitterModel = new LitterModel();
 				String[] list_temp = temp.split(" ");
-				mLitterModel.setUserId(Integer.parseInt(list_temp[0]));
+				mLitterModel.setUserId(list_temp[0]);
 				mLitterModel.setLittertypeID(Integer.parseInt(list_temp[1]));
 				mLitterModel.setWeight(Double.parseDouble(list_temp[2]));
 				mLitterModel.settPrice(mLitterTypeDao.getTPriceByLitterTypeId(Integer.parseInt(list_temp[1]))
@@ -153,7 +153,7 @@ public class LitterDao {
 				System.out.println(TAG + line + ":" + temp);
 				LitterModel mLitterModel = new LitterModel();
 				String[] list_temp = temp.split(" ");
-				mLitterModel.setUserId(Integer.parseInt(list_temp[0]));
+				mLitterModel.setUserId(list_temp[0]);
 				mLitterModel.setLittertypeID(Integer.parseInt(list_temp[1]));
 				mLitterModel.setWeight(Double.parseDouble(list_temp[2]));
 				mLitterModel.settPrice(mLitterTypeDao.getTPriceByLitterTypeId(Integer.parseInt(list_temp[1]))
@@ -215,7 +215,7 @@ public class LitterDao {
 			while (rs.next()) {
 				mLitterModel = new LitterModel();
 				mLitterModel.setID(rs.getInt(1));
-				mLitterModel.setUserId(rs.getInt(2));
+				mLitterModel.setUserId(rs.getString(2));
 				mLitterModel.setLittertypeID(rs.getInt(3));
 				mLitterModel.setWeight(rs.getDouble(4));
 				mLitterModel.settPrice(rs.getDouble(5));
@@ -239,11 +239,11 @@ public class LitterDao {
 		try {
 			Statement sql = mConnection.createStatement();
 			ResultSet rs = sql.executeQuery(
-					"SELECT cu.userId,cu.userName,cr.regionName,cl.weight,clt.typeName,cl.littertypeID,cl.tPrice,cl.litterdate FROM crwork.crwork_user cu INNER JOIN crwork.crwork_litter cl On cu.userId = cl.userId INNER JOIN crwork.crwork_litter_type clt On cl.littertypeID = clt.littertypeID INNER JOIN crwork.crwork_region cr On cr.regionID = cu.regionID ;");
+					"SELECT cu.userId,cu.userName,cc.city_name_zh,cl.weight,clt.typeName,cl.littertypeID,cl.tPrice,cl.litterdate FROM crwork_user cu INNER JOIN crwork_litter cl On cu.userId = cl.userId INNER JOIN crwork_litter_type clt On cl.littertypeID = clt.littertypeID INNER JOIN crwork_citys cc On cc.id = cu.regionID ;");
 			String[] mLitter = null;
 			while (rs.next()) {
 				mLitter = new String[8];
-				mLitter[0] = String.valueOf(rs.getInt(1));
+				mLitter[0] = rs.getString(1);
 				mLitter[1] = rs.getString(2);
 				mLitter[2] = rs.getString(3);
 				mLitter[3] = String.valueOf(rs.getDouble(4));
@@ -268,19 +268,19 @@ public class LitterDao {
 	 * @param mEndDate
 	 * @return
 	 */
-	public ArrayList<String[]> exportLitterData(String UserName, Date mStartDate, Date mEndDate) {
+	public ArrayList<String[]> exportLitterData(String UserName,String regionName, Date mStartDate, Date mEndDate) {
 		ArrayList<String[]> mLitterList = new ArrayList<String[]>();
 		try {
 			Statement sql = mConnection.createStatement();
 			ResultSet rs = sql.executeQuery(
-					"SELECT cu.userId,cu.userName,cr.regionName,cl.weight,clt.typeName,cl.littertypeID,cl.tPrice,cl.litterdate FROM crwork.crwork_user cu INNER JOIN crwork.crwork_litter cl On cu.userId = cl.userId INNER JOIN crwork.crwork_litter_type clt On cl.littertypeID = clt.littertypeID INNER JOIN crwork.crwork_region cr On cr.regionID = cu.regionID"
-							+ (mStartDate == null || mEndDate == null ? ";"
-									: " where cl.litterdate >= '" + mStartDate + "' and cl.litterdate <= '" + mEndDate
-											+ "' and cu.userName = '" + UserName + "';"));
+					"SELECT cu.userId,cu.userName,cc.city_name_zh,cl.weight,clt.typeName,cl.littertypeID,cl.tPrice,cl.litterdate FROM crwork_user cu INNER JOIN crwork_litter cl On cu.userId = cl.userId INNER JOIN crwork_litter_type clt On cl.littertypeID = clt.littertypeID INNER JOIN crwork_citys cc On cc.id = cu.regionID"
+							+ (mStartDate == null || mEndDate == null ? ";": " where cl.litterdate >= '" + mStartDate + "' and cl.litterdate <= '" + mEndDate
+							+ (UserName==null||UserName.equals("")?"":"' and cu.userName = '" + UserName)
+							+ (regionName==null||regionName.equals("")?"":"' and cc.city_name_zh = '" + regionName) + "';"));
 			String[] mLitter = null;
 			while (rs.next()) {
 				mLitter = new String[8];
-				mLitter[0] = String.valueOf(rs.getInt(1));
+				mLitter[0] = rs.getString(1);
 				mLitter[1] = rs.getString(2);
 				mLitter[2] = rs.getString(3);
 				mLitter[3] = String.valueOf(rs.getDouble(4));
@@ -293,6 +293,7 @@ public class LitterDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println(TAG + e + "\n");
 		}
 		return mLitterList;
 	}

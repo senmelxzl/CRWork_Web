@@ -10,7 +10,7 @@ import java.sql.Date;
  */
 public class LitterModel {
 	private int ID;
-	private int userId;
+	private String userId;
 	private int littertypeID;
 	private Double weight;
 	private Double tPrice;
@@ -24,11 +24,11 @@ public class LitterModel {
 		ID = iD;
 	}
 
-	public int getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

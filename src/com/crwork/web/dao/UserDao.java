@@ -30,22 +30,21 @@ public class UserDao {
 	 * 
 	 * @return List UserModel
 	 */
-	public ArrayList<UserModel> getUserList() {
-		ArrayList<UserModel> umlist = new ArrayList<UserModel>();
+	public ArrayList<String[]> getUserList() {
+		ArrayList<String[]> umlist = new ArrayList<String[]>();
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
-			String sql = "select * from " + CRWorkJDBC.USER_TABLE;
+			String sql = "SELECT cu.userId,cu.userName,cc.city_name_zh,cu.userType,cu.registeredDate FROM crwork_user cu INNER JOIN crwork_citys cc On cu.regionID = cc.id";
 			Statement st = mConnection.createStatement();
 			ResultSet rs = st.executeQuery(sql);
-			UserModel mUserModel = null;
+			String[] mUserModel = null;
 			while (rs.next()) {
-				mUserModel = new UserModel();
-				mUserModel.setID(rs.getInt(1));
-				mUserModel.setUserId(rs.getInt(2));
-				mUserModel.setUserName(rs.getString(3));
-				mUserModel.setRegionID(rs.getInt(4));
-				mUserModel.setUserType(rs.getInt(5));
-				mUserModel.setUserRD(rs.getDate(6));
+				mUserModel = new String[5];
+				mUserModel[0] = rs.getString(1);
+				mUserModel[1] = rs.getString(2);
+				mUserModel[2] = rs.getString(3);
+				mUserModel[3] = String.valueOf(rs.getInt(4));
+				mUserModel[4] = String.valueOf(rs.getDate(5));
 				umlist.add(mUserModel);
 			}
 			mConnection.close();
@@ -61,22 +60,22 @@ public class UserDao {
 	 * 
 	 * @return UserModel
 	 */
-	public UserModel getUserInfor(int userId) {
+	public UserModel getUserInfor(String userId) {
 		UserModel mUserModel = null;
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
 			String sql = "select * from " + CRWorkJDBC.USER_TABLE + " where userId=?";
 			PreparedStatement psmt = mConnection.prepareStatement(sql);
-			psmt.setInt(1, userId);
+			psmt.setString(1, userId);
 			ResultSet rs = psmt.executeQuery();
 			while (rs.next()) {
 				mUserModel = new UserModel();
 				mUserModel.setID(rs.getInt(1));
-				mUserModel.setUserId(rs.getInt(2));
+				mUserModel.setUserId(rs.getString(2));
 				mUserModel.setUserName(rs.getString(3));
 				mUserModel.setRegionID(rs.getInt(4));
 				mUserModel.setUserType(rs.getInt(5));
-				mUserModel.setUserRD(rs.getDate(6));
+				mUserModel.setRegisteredDate(rs.getDate(6));
 				mUserModel.setPsw(rs.getString(7));
 			}
 			System.out.println("getUserInfor()  success!" + "\n");
@@ -97,14 +96,14 @@ public class UserDao {
 	public boolean insertUserInfor(UserModel mUserModel) {
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
-			String sql = "insert into " + CRWorkJDBC.USER_TABLE + " (userId,userName,regionID,userType,userRD,psw)"
-					+ "values(?,?,?,?,?,?)";
+			String sql = "insert into " + CRWorkJDBC.USER_TABLE
+					+ " (userId,userName,regionID,userType,registeredDate,psw)" + "values(?,?,?,?,?,?)";
 			PreparedStatement pst = mConnection.prepareStatement(sql);
-			pst.setInt(1, mUserModel.getUserId());
+			pst.setString(1, mUserModel.getUserId());
 			pst.setString(2, mUserModel.getUserName());
 			pst.setInt(3, mUserModel.getRegionID());
 			pst.setInt(4, mUserModel.getUserType());
-			pst.setDate(5, mUserModel.getUserRD());
+			pst.setDate(5, mUserModel.getRegisteredDate());
 			pst.setString(6, mUserModel.getPsw());
 			pst.executeUpdate();
 			pst.close();
@@ -134,7 +133,7 @@ public class UserDao {
 			pst.setString(1, mUserModel.getUserName());
 			pst.setInt(2, mUserModel.getRegionID());
 			pst.setInt(3, mUserModel.getUserType());
-			pst.setInt(4, mUserModel.getUserId());
+			pst.setString(4, mUserModel.getUserId());
 			pst.executeUpdate();
 			pst.close();
 			mConnection.close();
@@ -155,13 +154,13 @@ public class UserDao {
 	 * 
 	 * @return boolean
 	 */
-	public boolean updateUserPsw(int userId, String psw) {
+	public boolean updateUserPsw(String userId, String psw) {
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
 			String sql = "update" + CRWorkJDBC.USER_TABLE + " set psw=? where userId=?";
 			PreparedStatement pst = mConnection.prepareStatement(sql);
 			pst.setString(1, psw);
-			pst.setInt(2, userId);
+			pst.setString(2, userId);
 			pst.executeUpdate();
 			pst.close();
 			mConnection.close();
@@ -210,11 +209,11 @@ public class UserDao {
 	 */
 	public boolean insertUserInforTest() {
 		UserModel mUserModelTest = new UserModel();
-		mUserModelTest.setUserId(198819);
+		mUserModelTest.setUserId("198819");
 		mUserModelTest.setUserName("–ª’Ò¡÷");
 		mUserModelTest.setUserType(1);
 		mUserModelTest.setRegionID(12);
-		mUserModelTest.setUserRD(DateUtil.getCurrentDate());
+		mUserModelTest.setRegisteredDate(DateUtil.getCurrentDate());
 		mUserModelTest.setPsw("xzl198819");
 		return insertUserInfor(mUserModelTest);
 	}
@@ -253,14 +252,14 @@ public class UserDao {
 	 * @param userName
 	 * @return
 	 */
-	public String getUserNameByUserId(int userId) {
+	public String getUserNameByUserId(String userId) {
 		// TODO Auto-generated method stub
 		String UserName = "";
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
 			String sql = "select userName from " + CRWorkJDBC.USER_TABLE + " where userId=?";
 			PreparedStatement psmt = mConnection.prepareStatement(sql);
-			psmt.setInt(1, userId);
+			psmt.setString(1, userId);
 			ResultSet rs = psmt.executeQuery();
 			while (rs.next()) {
 				UserName = rs.getString(1);

@@ -35,11 +35,27 @@ public class DateUtil {
 
 	/**
 	 * 
-	 * @return dateNowStr
+	 * @return datePreStr
 	 */
 	public static Date getPreviousDate() {
 		java.util.Date utilDate = new java.util.Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			utilDate = sdf.parse(sdf.format(new java.util.Date()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new java.sql.Date(utilDate.getTime());
+	}
+
+	/**
+	 * 
+	 * @return datePreStr
+	 */
+	public static Date getCurrentDateTime() {
+		java.util.Date utilDate = new java.util.Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
 			utilDate = sdf.parse(sdf.format(new java.util.Date()));
 		} catch (ParseException e) {

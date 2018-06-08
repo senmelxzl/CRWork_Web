@@ -7,10 +7,10 @@
 	<div>
 		<footer>
 			<p>
-				Copyright &copy; 2018.CR Work All rights reserved.More Information <a
-					href="http://humobot.com" target="_blank" title="CR Work">CR
-					Work</a> - Collect from <a href="http://humobot.com" title="CR Work"
-					target="_blank">CR Work</a>
+				Copyright &copy; 2018.Humobot All rights reserved.More Information <a
+					href="https://github.com/Humobot" target="_blank" title="Humobot">Humobot</a>
+				- Collect from <a href="https://github.com/Humobot" title="Humobot"
+					target="_blank">Humobot</a>
 			</p>
 		</footer>
 	</div>

@@ -85,9 +85,9 @@
 								action="${pageContext.request.contextPath}/servlet/UserServlet"
 								method="post" class="login-form" onsubmit="return logincheck();">
 								<div class="form-group">
-									<label class="sr-only" for="form-username">userID</label> <input
-										type="text" name="userID" placeholder="用户帐号..."
-										class="form-username form-control" id="userID">
+									<label class="sr-only" for="form-username">userId</label> <input
+										type="text" name="userId" placeholder="用户帐号..."
+										class="form-username form-control" id="userId">
 								</div>
 								<div class="form-group">
 									<label class="sr-only" for="form-password">password</label> <input
@@ -99,6 +99,7 @@
 						</div>
 					</div>
 				</div>
+				<!-- 
 				<div class="row">
 					<div class="col-sm-6 col-sm-offset-3 social-login">
 						<h3>...其他登录方式</h3>
@@ -113,6 +114,7 @@
 						</div>
 					</div>
 				</div>
+				 -->
 			</div>
 		</div>
 
@@ -133,7 +135,7 @@
         <![endif]-->
 	<script type="text/javascript">
 		function logincheck() {
-			var userName = $("#userID").val();
+			var userName = $("#userId").val();
 			var password = $("#password").val();
 			if (userName == "" || password == "") {
 				alert("用户名或密码不能为空")
