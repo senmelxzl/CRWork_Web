@@ -60,13 +60,14 @@ public class UserDao {
 	 * 
 	 * @return UserModel
 	 */
-	public UserModel getUserInfor(String userId) {
+	public UserModel getUserInfor(String userId,String psw) {
 		UserModel mUserModel = null;
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
-			String sql = "select * from " + CRWorkJDBC.USER_TABLE + " where userId=?";
+			String sql = "select * from " + CRWorkJDBC.USER_TABLE + " where userId=? and psw=?";
 			PreparedStatement psmt = mConnection.prepareStatement(sql);
 			psmt.setString(1, userId);
+			psmt.setString(2, psw);
 			ResultSet rs = psmt.executeQuery();
 			while (rs.next()) {
 				mUserModel = new UserModel();

@@ -129,7 +129,7 @@ public class LoadFileServlet extends HttpServlet {
 			request.setAttribute("message", "Error:" + ex.getMessage());
 		}
 		// Ìø×ªµ½ message.jsp
-		response.sendRedirect(request.getContextPath() + "/crwork_bsm_forms/empty.jsp");
+		response.sendRedirect(request.getContextPath() + "/crwork_bsm_forms/upload.jsp");
 	}
 
 }

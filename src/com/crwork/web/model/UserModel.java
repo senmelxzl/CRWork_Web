@@ -20,6 +20,7 @@ public class UserModel {
 	private int userType;
 	private Date registeredDate;
 	private String psw;
+	private int iscr;
 
 	public int getID() {
 		return ID;
@@ -75,6 +76,14 @@ public class UserModel {
 
 	public void setPsw(String psw) {
 		this.psw = psw;
+	}
+
+	public int getIscr() {
+		return iscr;
+	}
+
+	public void setIscr(int iscr) {
+		this.iscr = iscr;
 	}
 
 }

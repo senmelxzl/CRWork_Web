@@ -3,6 +3,7 @@ package com.crwork.web.dao;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -156,8 +157,8 @@ public class LitterDao {
 				mLitterModel.setUserId(list_temp[0]);
 				mLitterModel.setLittertypeID(Integer.parseInt(list_temp[1]));
 				mLitterModel.setWeight(Double.parseDouble(list_temp[2]));
-				mLitterModel.settPrice(mLitterTypeDao.getTPriceByLitterTypeId(Integer.parseInt(list_temp[1]))
-						* Double.parseDouble(list_temp[2]));
+                mLitterModel.settPrice(new BigDecimal(mLitterTypeDao.getTPriceByLitterTypeId(Integer.parseInt(list_temp[1]))
+                        * Double.parseDouble(list_temp[2])).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 				mLitterModel.setLitterdate(DateUtil.getCurrentDate());
 				list.add(mLitterModel);
 				line++;
