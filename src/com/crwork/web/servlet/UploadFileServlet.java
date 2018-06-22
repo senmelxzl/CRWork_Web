@@ -11,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -28,7 +27,7 @@ public class UploadFileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String TAG = "UploadFileServlet";
 	// 上传文件存储目录
-	private static final String UPLOAD_DIRECTORY = "upload";
+	private static final String UPLOAD_DIRECTORY = "upload";	
 
 	// 上传配置
 	private static final int MEMORY_THRESHOLD = 1024 * 1024 * 3; // 3MB

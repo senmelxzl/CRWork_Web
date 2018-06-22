@@ -22,7 +22,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import com.crwork.web.dao.LitterDao;
-import com.crwork.web.util.DataFormatUtil;
+import com.crwork.web.util.Arith;
 import com.crwork.web.util.DateUtil;
 
 /**
@@ -132,14 +132,15 @@ public class LitterServlet extends HttpServlet {
 					HSSFRow rows = sheet.createRow(row);
 					String cimark = "-";
 					if (mLitterModelList.get(row - 2)[5].equals("0")) {
-						totalCost += Double.parseDouble(mLitterModelList.get(row - 2)[6]);
-						totalWeight_UR += Double.parseDouble(mLitterModelList.get(row - 2)[3]);
+						totalCost = Arith.add(totalCost, Double.parseDouble(mLitterModelList.get(row - 2)[6]));
+						totalWeight_UR = Arith.add(totalWeight_UR,
+								Double.parseDouble(mLitterModelList.get(row - 2)[3]));
 					} else {
 						cimark = "+";
-						totalIncome += Double.parseDouble(mLitterModelList.get(row - 2)[6]);
-						totalWeight_R += Double.parseDouble(mLitterModelList.get(row - 2)[3]);
+						totalIncome = Arith.add(totalIncome, Double.parseDouble(mLitterModelList.get(row - 2)[6]));
+						totalWeight_R = Arith.add(totalWeight_R, Double.parseDouble(mLitterModelList.get(row - 2)[3]));
 					}
-					totalWeight += Double.parseDouble(mLitterModelList.get(row - 2)[3]);
+					totalWeight = Arith.add(totalWeight, Double.parseDouble(mLitterModelList.get(row - 2)[3]));
 					for (int col = 0; col < mLitterModelList.get(row - 2).length; col++) {
 						// add data
 						rows.createCell(col)
@@ -147,21 +148,13 @@ public class LitterServlet extends HttpServlet {
 					}
 				}
 
-				System.out.println("总重量:" + DataFormatUtil.getTwoDecimal(totalWeight) + "\n");
-				System.out.println("废弃物重量:" + DataFormatUtil.getTwoDecimal(totalWeight_UR) + "\n");
-				System.out.println("可回收重量:" + DataFormatUtil.getTwoDecimal(totalWeight_R) + "\n");
-				System.out.println("总费用:" + DataFormatUtil.getTwoDecimal(totalCost) + "\n");
-				System.out.println("总收入:" + DataFormatUtil.getTwoDecimal(totalIncome) + "\n");
+				System.out.println("总重量:" + totalWeight + "\n");
+				System.out.println("废弃物重量:" + totalWeight_UR + "\n");
+				System.out.println("可回收重量:" + totalWeight_R + "\n");
+				System.out.println("总费用:" + totalCost + "\n");
+				System.out.println("总收入:" + totalIncome + "\n");
 
-				HSSFRow rowTotalWeight = sheet.createRow(mLitterModelList.size() + 2);
-				HSSFCell cellTotalWeight = rowTotalWeight.createCell(2);
-				cellTotalWeight.setCellValue("总重量:");
-				HSSFCell cellTotalWeight_val = rowTotalWeight.createCell(3);
-				cellTotalWeight_val.setCellValue(totalWeight);
-				HSSFCell cellTotalWeight_val_str = rowTotalWeight.createCell(4);
-				cellTotalWeight_val_str.setCellValue("kg/公斤");
-
-				HSSFRow rowTotalWeight_UR = sheet.createRow(mLitterModelList.size() + 3);
+				HSSFRow rowTotalWeight_UR = sheet.createRow(mLitterModelList.size() + 2);
 				HSSFCell cellTotalWeight_UR = rowTotalWeight_UR.createCell(2);
 				cellTotalWeight_UR.setCellValue("废弃物重量:");
 				HSSFCell cellTotalWeight_UR_val = rowTotalWeight_UR.createCell(3);
@@ -169,7 +162,7 @@ public class LitterServlet extends HttpServlet {
 				HSSFCell cellTotalWeight_UR_val_str = rowTotalWeight_UR.createCell(4);
 				cellTotalWeight_UR_val_str.setCellValue("kg/公斤");
 
-				HSSFRow rowTotalWeight_R = sheet.createRow(mLitterModelList.size() + 4);
+				HSSFRow rowTotalWeight_R = sheet.createRow(mLitterModelList.size() + 3);
 				HSSFCell cellTotalWeight_R = rowTotalWeight_R.createCell(2);
 				cellTotalWeight_R.setCellValue("可回收重量:");
 				HSSFCell cellTotalWeight_R_val = rowTotalWeight_R.createCell(3);
@@ -177,36 +170,41 @@ public class LitterServlet extends HttpServlet {
 				HSSFCell cellTotalWeight_R_val_str = rowTotalWeight_R.createCell(4);
 				cellTotalWeight_R_val_str.setCellValue("kg/公斤");
 
-				// HSSFRow rowTotalCost = sheet.createRow(mLitterModelList.size() + 2);
-				HSSFCell cellTotalCost = rowTotalWeight.createCell(5);
+				HSSFRow rowTotalWeight = sheet.createRow(mLitterModelList.size() + 4);
+				HSSFCell cellTotalWeight = rowTotalWeight.createCell(2);
+				cellTotalWeight.setCellValue("总重量:");
+				HSSFCell cellTotalWeight_val = rowTotalWeight.createCell(3);
+				cellTotalWeight_val.setCellValue(totalWeight);
+				HSSFCell cellTotalWeight_val_str = rowTotalWeight.createCell(4);
+				cellTotalWeight_val_str.setCellValue("kg/公斤");
+
+				HSSFCell cellTotalCost = rowTotalWeight_UR.createCell(5);
 				cellTotalCost.setCellValue("总费用:");
-				HSSFCell cellTotalCost_val = rowTotalWeight.createCell(6);
+				HSSFCell cellTotalCost_val = rowTotalWeight_UR.createCell(6);
 				cellTotalCost_val.setCellValue(totalCost);
-				HSSFCell cellTotalCost_val_str = rowTotalWeight.createCell(7);
+				HSSFCell cellTotalCost_val_str = rowTotalWeight_UR.createCell(7);
 				cellTotalCost_val_str.setCellValue("元");
 
-				// HSSFRow rowTotalIncome = sheet.createRow(mLitterModelList.size() + 3);
-				HSSFCell cellTotalIncome = rowTotalWeight_UR.createCell(5);
+				HSSFCell cellTotalIncome = rowTotalWeight_R.createCell(5);
 				cellTotalIncome.setCellValue("总收入:");
-				HSSFCell cellTotalIncome_val = rowTotalWeight_UR.createCell(6);
+				HSSFCell cellTotalIncome_val = rowTotalWeight_R.createCell(6);
 				cellTotalIncome_val.setCellValue(totalIncome);
-				HSSFCell cellTotalIncome_val_str = rowTotalWeight_UR.createCell(7);
+				HSSFCell cellTotalIncome_val_str = rowTotalWeight_R.createCell(7);
 				cellTotalIncome_val_str.setCellValue("元");
 
-				// HSSFRow rowTotalEarnings = sheet.createRow(mLitterModelList.size() + 4);
-				HSSFCell cellTotalEarnings = rowTotalWeight_R.createCell(5);
+				HSSFCell cellTotalEarnings = rowTotalWeight.createCell(5);
 				if (totalCost > totalIncome) {
-					totalEarnings = DataFormatUtil.getTwoDecimal(totalCost - totalIncome);
+					totalEarnings = Arith.sub(totalCost, totalIncome);
 					cellTotalEarnings.setCellValue("费用支出:");
-					System.out.println("费用支出:" + DataFormatUtil.getTwoDecimal(totalCost - totalIncome) + "\n");
+					System.out.println("费用支出:" + Arith.sub(totalCost, totalIncome) + "\n");
 				} else {
-					totalEarnings = DataFormatUtil.getTwoDecimal(totalIncome - totalCost);
+					totalEarnings = Arith.sub(totalIncome, totalCost);
 					cellTotalEarnings.setCellValue("盈利收入:");
-					System.out.println("盈利收入:" + DataFormatUtil.getTwoDecimal(totalIncome - totalCost) + "\n");
+					System.out.println("盈利收入:" + Arith.sub(totalIncome, totalCost) + "\n");
 				}
-				HSSFCell cellTotalEarnings_val = rowTotalWeight_R.createCell(6);
+				HSSFCell cellTotalEarnings_val = rowTotalWeight.createCell(6);
 				cellTotalEarnings_val.setCellValue(totalEarnings);
-				HSSFCell cellTotalEarnings_val_str = rowTotalWeight_R.createCell(7);
+				HSSFCell cellTotalEarnings_val_str = rowTotalWeight.createCell(7);
 				cellTotalEarnings_val_str.setCellValue("元");
 
 				File xlsFile = new File(
@@ -214,6 +212,7 @@ public class LitterServlet extends HttpServlet {
 				System.out.println("导出数据名称：" + xlsFile.getName());
 				FileOutputStream xlsStream = new FileOutputStream(xlsFile);
 				workbook.write(xlsStream);
+				workbook.close();
 				ld_mark = "1";
 			}
 		} else {

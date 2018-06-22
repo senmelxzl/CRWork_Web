@@ -34,17 +34,20 @@ public class UserDao {
 		ArrayList<String[]> umlist = new ArrayList<String[]>();
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
-			String sql = "SELECT cu.userId,cu.userName,cc.city_name_zh,cu.userType,cu.registeredDate FROM crwork_user cu INNER JOIN crwork_citys cc On cu.regionID = cc.id";
+			String sql = "SELECT cu.ID, cu.userId,cu.userName,cc.city_name_zh,cu.regionID,cu.userType,cu.registeredDate,cu.iscr FROM crwork_user cu INNER JOIN crwork_citys cc On cu.regionID = cc.id";
 			Statement st = mConnection.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			String[] mUserModel = null;
 			while (rs.next()) {
-				mUserModel = new String[5];
-				mUserModel[0] = rs.getString(1);
+				mUserModel = new String[8];
+				mUserModel[0] = String.valueOf(rs.getInt(1));
 				mUserModel[1] = rs.getString(2);
 				mUserModel[2] = rs.getString(3);
-				mUserModel[3] = String.valueOf(rs.getInt(4));
-				mUserModel[4] = String.valueOf(rs.getDate(5));
+				mUserModel[3] = rs.getString(4);
+				mUserModel[4] = String.valueOf(rs.getInt(5));
+				mUserModel[5] = String.valueOf(rs.getInt(6));
+				mUserModel[6] = String.valueOf(rs.getDate(7));
+				mUserModel[7] = String.valueOf(rs.getInt(8));
 				umlist.add(mUserModel);
 			}
 			mConnection.close();
@@ -60,7 +63,7 @@ public class UserDao {
 	 * 
 	 * @return UserModel
 	 */
-	public UserModel getUserInfor(String userId,String psw) {
+	public UserModel getUser(String userId, String psw) {
 		UserModel mUserModel = null;
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
@@ -94,18 +97,19 @@ public class UserDao {
 	 * 
 	 * @return boolean
 	 */
-	public boolean insertUserInfor(UserModel mUserModel) {
+	public boolean insertUser(UserModel mUserModel) {
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
 			String sql = "insert into " + CRWorkJDBC.USER_TABLE
-					+ " (userId,userName,regionID,userType,registeredDate,psw)" + "values(?,?,?,?,?,?)";
+					+ " (userId,userName,regionID,userType,registeredDate,psw,iscr)" + "values(?,?,?,?,?,?,?)";
 			PreparedStatement pst = mConnection.prepareStatement(sql);
 			pst.setString(1, mUserModel.getUserId());
 			pst.setString(2, mUserModel.getUserName());
 			pst.setInt(3, mUserModel.getRegionID());
 			pst.setInt(4, mUserModel.getUserType());
-			pst.setDate(5, mUserModel.getRegisteredDate());
-			pst.setString(6, mUserModel.getPsw());
+			pst.setDate(5, DateUtil.getCurrentDate());
+			pst.setString(6, "12345678");
+			pst.setInt(7, mUserModel.getIscr());
 			pst.executeUpdate();
 			pst.close();
 			mConnection.close();
@@ -126,15 +130,18 @@ public class UserDao {
 	 * 
 	 * @return boolean
 	 */
-	public boolean updateUserInfor(UserModel mUserModel) {
+	public boolean updateUser(UserModel mUserModel) {
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
-			String sql = "update" + CRWorkJDBC.USER_TABLE + " set userName=?,regionID=?,userType=? where userId=?";
+			String sql = "update " + CRWorkJDBC.USER_TABLE
+					+ " set userName=?,regionID=?,userType=?,userId=?,iscr=? where ID=?";
 			PreparedStatement pst = mConnection.prepareStatement(sql);
 			pst.setString(1, mUserModel.getUserName());
 			pst.setInt(2, mUserModel.getRegionID());
 			pst.setInt(3, mUserModel.getUserType());
 			pst.setString(4, mUserModel.getUserId());
+			pst.setInt(5, mUserModel.getIscr());
+			pst.setInt(6, mUserModel.getID());
 			pst.executeUpdate();
 			pst.close();
 			mConnection.close();
@@ -158,7 +165,7 @@ public class UserDao {
 	public boolean updateUserPsw(String userId, String psw) {
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
-			String sql = "update" + CRWorkJDBC.USER_TABLE + " set psw=? where userId=?";
+			String sql = "update " + CRWorkJDBC.USER_TABLE + " set psw=? where userId=?";
 			PreparedStatement pst = mConnection.prepareStatement(sql);
 			pst.setString(1, psw);
 			pst.setString(2, userId);
@@ -182,12 +189,12 @@ public class UserDao {
 	 * 
 	 * @return boolean
 	 */
-	public boolean deleteUserInfor(int userId) {
+	public boolean deleteUser(String userId) {
 		mConnection = mCRWorkJDBC.getCRWorkConn();
 		try {
 			String sql = "delete from " + CRWorkJDBC.USER_TABLE + " where userId=?";
 			PreparedStatement pst = mConnection.prepareStatement(sql);
-			pst.setInt(1, userId);
+			pst.setString(1, userId);
 			pst.executeUpdate();
 			pst.close();
 			mConnection.close();
@@ -201,22 +208,6 @@ public class UserDao {
 			System.out.println("deleteUserInfor() completed!" + "\n");
 		}
 		return false;
-	}
-
-	/**
-	 * insert user data test
-	 * 
-	 * @return boolean
-	 */
-	public boolean insertUserInforTest() {
-		UserModel mUserModelTest = new UserModel();
-		mUserModelTest.setUserId("198819");
-		mUserModelTest.setUserName("–ª’Ò¡÷");
-		mUserModelTest.setUserType(1);
-		mUserModelTest.setRegionID(12);
-		mUserModelTest.setRegisteredDate(DateUtil.getCurrentDate());
-		mUserModelTest.setPsw("xzl198819");
-		return insertUserInfor(mUserModelTest);
 	}
 
 	/**

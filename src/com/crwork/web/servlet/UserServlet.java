@@ -47,7 +47,7 @@ public class UserServlet extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String psw = request.getParameter("password");
 		UserDao mUserDao = new UserDao();
-		UserModel mUserModel = mUserDao.getUserInfor(userId, psw);
+		UserModel mUserModel = mUserDao.getUser(userId, psw);
 		String Redirect_url = "/crwork_login_forms/form-1/index.jsp";
 		if (mUserModel != null && mUserModel.getPsw().equals(psw)) {
 			session.setAttribute("mUserModel", mUserModel);

@@ -245,8 +245,8 @@
 
 							</ul></li>
 					</ul></li>-->
-				<li><a href="upload.jsp"><i class="fa fa-fw fa-file"></i> 上传</a>
-				</li>
+				<li><a href="upload.jsp"><i class="fa fa-fw fa-file"></i>
+						上传</a></li>
 
 				<li><a href="user.jsp" class="active-menu"><i
 						class="fa fa-edit"></i> 用户管理 </a></li>
@@ -296,11 +296,11 @@
 													for (int i = 0; i < mUserModellist.size(); i++) {
 											%>
 											<tr class="even gradeC">
-												<td class="center"><center><%=mUserModellist.get(i)[0]%></center></td>
 												<td class="center"><center><%=mUserModellist.get(i)[1]%></center></td>
 												<td class="center"><center><%=mUserModellist.get(i)[2]%></center></td>
+												<td class="center"><center><%=mUserModellist.get(i)[3]%></center></td>
 												<%
-													userType = Integer.parseInt(mUserModellist.get(i)[3]);
+													userType = Integer.parseInt(mUserModellist.get(i)[5]);
 															if (userType == 2) {
 												%>
 												<td class="center"><center>普通用户</center></td>
@@ -314,7 +314,7 @@
 												<%
 													}
 												%>
-												<td class="center"><center><%=mUserModellist.get(i)[4]%></center></td>
+												<td class="center"><center><%=mUserModellist.get(i)[6]%></center></td>
 
 												<td class="center"><center>
 														<label><a

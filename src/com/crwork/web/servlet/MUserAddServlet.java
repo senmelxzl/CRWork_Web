@@ -15,17 +15,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 /**
- * Servlet implementation class MobileUserLoginServlet
+ * Servlet implementation class MUserAddServlet
  */
-@WebServlet("/MobileUserLoginServlet")
-public class MobileUserLoginServlet extends HttpServlet {
+@WebServlet("/MUserAddServlet")
+public class MUserAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String TAG = "MobileUserLoginServlet";
+	private static final String TAG = "MUserAddServlet";
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public MobileUserLoginServlet() {
+	public MUserAddServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -42,14 +42,25 @@ public class MobileUserLoginServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		String result = "";
 		String userId = request.getParameter("userId");
-		String psw = request.getParameter("psw");
+		String userName = request.getParameter("userName");
+		String regionID = request.getParameter("regionID");
+		String userType = request.getParameter("userType");
+		String iscr = request.getParameter("iscr");
+		UserModel mUserModel = new UserModel();
+		mUserModel.setUserId(userId);
+		mUserModel.setUserName(userName);
+		mUserModel.setRegionID(Integer.parseInt(regionID));
+		mUserModel.setUserType(Integer.parseInt(userType));
+		mUserModel.setIscr(Integer.parseInt(iscr));
 
 		System.out.println(TAG + "userId=" + userId);
-		System.out.println(TAG + "psw=" + psw);
-		UserModel mUserModel = (new UserDao()).getUserInfor(userId, psw);
+		System.out.println(TAG + "userName=" + userName);
+		System.out.println(TAG + "regionID=" + regionID);
+		System.out.println(TAG + "userType=" + userType);
+		System.out.println(TAG + "iscr=" + iscr);
 		Gson gs = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-		if (mUserModel != null) {
-			result = gs.toJson(mUserModel);
+		if (new UserDao().insertUser(mUserModel)) {
+			result = "success";
 		} else {
 			result = "fail";
 		}
@@ -71,14 +82,25 @@ public class MobileUserLoginServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		String result = "";
 		String userId = request.getParameter("userId");
-		String psw = request.getParameter("psw");
+		String userName = request.getParameter("userName");
+		String regionID = request.getParameter("regionID");
+		String userType = request.getParameter("userType");
+		String iscr = request.getParameter("iscr");
+		UserModel mUserModel = new UserModel();
+		mUserModel.setUserId(userId);
+		mUserModel.setUserName(userName);
+		mUserModel.setRegionID(Integer.parseInt(regionID));
+		mUserModel.setUserType(Integer.parseInt(userType));
+		mUserModel.setIscr(Integer.parseInt(iscr));
 
 		System.out.println(TAG + "userId=" + userId);
-		System.out.println(TAG + "psw=" + psw);
-		UserModel mUserModel = (new UserDao()).getUserInfor(userId, psw);
+		System.out.println(TAG + "userName=" + userName);
+		System.out.println(TAG + "regionID=" + regionID);
+		System.out.println(TAG + "userType=" + userType);
+		System.out.println(TAG + "iscr=" + iscr);
 		Gson gs = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-		if (mUserModel != null) {
-			result = gs.toJson(mUserModel);
+		if (new UserDao().insertUser(mUserModel)) {
+			result = "success";
 		} else {
 			result = "fail";
 		}

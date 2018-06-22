@@ -1,75 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-  <display-name>CRWork_Web</display-name>
-  <servlet>
-    <description>Load litter data files</description>
-    <servlet-name>LoadFileServlet</servlet-name>
-    <servlet-class>com.crwork.web.servlet.LoadFileServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>LoadFileServlet</servlet-name>
-    <url-pattern>/servlet/LoadFileServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description>User data</description>
-    <servlet-name>UserServlet</servlet-name>
-    <servlet-class>com.crwork.web.servlet.UserServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UserServlet</servlet-name>
-    <url-pattern>/servlet/UserServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description>litter data</description>
-    <servlet-name>LitterServlet</servlet-name>
-    <servlet-class>com.crwork.web.servlet.LitterServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>LitterServlet</servlet-name>
-    <url-pattern>/servlet/LitterServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description>export excel data</description>
-    <servlet-name>ExportExcelServlet</servlet-name>
-    <servlet-class>com.crwork.web.servlet.ExportExcelServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ExportExcelServlet</servlet-name>
-    <url-pattern>/servlet/ExportExcelServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description>upload litter file</description>
-    <servlet-name>UploadFileServlet</servlet-name>
-    <servlet-class>com.crwork.web.servlet.UploadFileServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UploadFileServlet</servlet-name>
-    <url-pattern>/servlet/UploadFileServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description>get citys</description>
-    <servlet-name>GetCitysServlet</servlet-name>
-    <servlet-class>com.crwork.web.servlet.GetCitysServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>GetCitysServlet</servlet-name>
-    <url-pattern>/servlet/GetCitysServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description>login mobile</description>
-    <servlet-name>MobileUserLoginServlet</servlet-name>
-    <servlet-class>com.crwork.web.servlet.MobileUserLoginServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>MobileUserLoginServlet</servlet-name>
-    <url-pattern>/servlet/MobileUserLoginServlet</url-pattern>
-  </servlet-mapping>
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+	<display-name>CRWork_Web</display-name>
+	<servlet>
+		<description>Load litter data files</description>
+		<servlet-name>LoadFileServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.LoadFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoadFileServlet</servlet-name>
+		<url-pattern>/servlet/LoadFileServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>User data</description>
+		<servlet-name>UserServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.UserServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserServlet</servlet-name>
+		<url-pattern>/servlet/UserServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>litter data</description>
+		<servlet-name>LitterServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.LitterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LitterServlet</servlet-name>
+		<url-pattern>/servlet/LitterServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>upload litter file</description>
+		<servlet-name>UploadFileServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.UploadFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadFileServlet</servlet-name>
+		<url-pattern>/servlet/UploadFileServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>get citys</description>
+		<servlet-name>GetCitysServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.GetCitysServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetCitysServlet</servlet-name>
+		<url-pattern>/servlet/GetCitysServlet</url-pattern>
+	</servlet-mapping>
+	<!-- mobile -->
+	<servlet>
+		<description>mobile user </description>
+		<servlet-name>MUserServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.MUserServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MUserServlet</servlet-name>
+		<url-pattern>/servlet/MUserServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>user login mobile</description>
+		<servlet-name>MUserLoginServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.MUserLoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MUserLoginServlet</servlet-name>
+		<url-pattern>/servlet/MUserLoginServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>user add mobile</description>
+		<servlet-name>MUserAddServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.MUserAddServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MUserAddServlet</servlet-name>
+		<url-pattern>/servlet/MUserAddServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>user modify mobile</description>
+		<servlet-name>MUserModifyServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.MUserModifyServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MUserModifyServlet</servlet-name>
+		<url-pattern>/servlet/MUserModifyServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>export ltter mobile</description>
+		<servlet-name>MLitterServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.MLitterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MLitterServlet</servlet-name>
+		<url-pattern>/servlet/MLitterServlet</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
 </web-app>
