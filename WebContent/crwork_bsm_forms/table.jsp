@@ -27,21 +27,14 @@
 <%
 	HttpSession mHttpSession = request.getSession();
 	String ld_mark = null;
-	LitterDao mLitterDao = new LitterDao();
-	ArrayList<String[]> mLitterModellist = null;
-	int userID = 0;
 	System.out.print("step :1" + "\n");
+	Double[] total_strs = null;
 	if (mHttpSession != null) {
 		ld_mark = (String) mHttpSession.getAttribute("ld_mark");
 		System.out.print("step :2" + "\n");
-		mLitterModellist = (ArrayList<String[]>) mHttpSession.getAttribute("mLitterModelList");
+		total_strs = (Double[]) mHttpSession.getAttribute("total_strs");
 		mHttpSession.setMaxInactiveInterval(1800);
-		if (mLitterModellist == null || mLitterModellist.size() == 0) {
-			System.out.print("step :3" + "\n");
-			mLitterModellist = mLitterDao.exportLitterData("", "", null, null);
-		}
 	}
-	UserDao mUserDao = new UserDao();
 %>
 <body>
 	<div id="wrapper">
@@ -237,7 +230,9 @@
 
 				<li><a href="index.jsp"><i class="fa fa-dashboard"></i> 总览</a></li>
 				<!--<li><a href="ui-elements.jsp"><i class="fa fa-desktop"></i>-->
-						UI Elements</a></li>
+				UI Elements
+				</a>
+				</li>
 				<li><a href="chart.jsp"><i class="fa fa-bar-chart-o"></i>
 						图表</a></li>
 				<!--<li><a href="tab-panel.jsp"><i class="fa fa-qrcode"></i>
@@ -261,8 +256,8 @@
 
 							</ul></li>
 					</ul></li>-->
-				<li><a href="upload.jsp"><i class="fa fa-fw fa-file"></i> 上传</a>
-				</li>
+				<li><a href="upload.jsp"><i class="fa fa-fw fa-file"></i>
+						上传</a></li>
 
 				<li><a href="user.jsp"><i class="fa fa-edit"></i> 用户管理 </a></li>
 			</ul>
@@ -338,9 +333,6 @@
 												name="ld_export" id="" value="导出">
 											<th>
 										</tr>
-
-
-
 									</table>
 
 								</form>
@@ -348,44 +340,61 @@
 							<div class="panel-body">
 								<div class="table-responsive">
 									<%
-										if (mLitterModellist != null && mLitterModellist.size() > 0) {
+										if (total_strs != null && total_strs.length > 0) {
 									%>
+									<center>
+										<div class="panel-heading">数据汇总</div>
+									</center>
 									<table class="table table-striped table-bordered table-hover"
 										id="dataTables-example">
-										<thead>
-											<tr>
-												<td align="center">编号</td>
-												<td align="center">姓名</td>
-												<td align="center">区域</td>
-												<td align="center">重量(kg)</td>
-												<td align="center">类型</td>
-												<td align="center">类型标号</td>
-												<td align="center">费用-/收入+(元)</td>
-												<td align="center">日期</td>
-											</tr>
-										</thead>
-										<tbody>
+										<tr>
+											<td align="center"></td>
+											<td align="center">(kg/公斤)</td>
+											<td align="center"></td>
+											<td align="center">(RMB/元)</td>
+										</tr>
+										<tr>
+											<td align="center">综合垃圾：</td>
+											<td align="center"><%=total_strs[1]%></td>
+											<td align="center">费用：</td>
+											<td align="center"><%=total_strs[4]%></td>
+										</tr>
+										<tr>
+											<td align="center">可回收：</td>
+											<td align="center"><%=total_strs[2]%></td>
+											<td align="center">收入：</td>
+											<td align="center"><%=total_strs[5]%></td>
+										</tr>
+										<tr>
+											<td align="center">厨余：</td>
+											<td align="center"><%=total_strs[3]%></td>
+											<td align="center">价值：</td>
+											<td align="center"><%=total_strs[6]%></td>
+										</tr>
+										<tr>
+											<td align="center">总和：</td>
+											<td align="center"><%=total_strs[0]%></td>
 											<%
-												for (int i = 0; i < mLitterModellist.size(); i++) {
+												if (total_strs[8] != 1.00) {
 											%>
-											<tr class="even gradeC">
-												<%
-													for (int j = 0; j < mLitterModellist.get(i).length; j++) {
-												%>
-												<td align="center"><center><%=mLitterModellist.get(i)[j]%></center></td>
-												<%
-													}
-												%>
-											</tr>
+											<td align="center">盈利：</td>
+											<%
+												} else {
+											%>
+											<td align="center">支出：</td>
 											<%
 												}
 											%>
-										</tbody>
+											<td align="center"><%=total_strs[7]%></td>
+										</tr>
 									</table>
 									<%
 										} else {
 									%>
-									<div class="panel-heading">暂无数据</div>
+
+									<center>
+										<div class="panel-heading">暂无数据</div>
+									</center>
 									<%
 										}
 									%>

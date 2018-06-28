@@ -28,6 +28,12 @@ public class CitysDao {
 		}
 	}
 
+	/**
+	 * 获取区域对象集
+	 * 
+	 * @param parent_id
+	 * @return
+	 */
 	public ArrayList<CitysModel> getCitys(int parent_id) {
 		ArrayList<CitysModel> lmList = new ArrayList<CitysModel>();
 		try {
@@ -59,6 +65,12 @@ public class CitysDao {
 		return lmList;
 	}
 
+	/**
+	 * 新增区域
+	 * 
+	 * @param mCitysModel
+	 * @return
+	 */
 	public boolean AddCitys(CitysModel mCitysModel) {
 		try {
 			String sql = "insert into " + CRWorkJDBC.CITY_TABLE
@@ -88,6 +100,12 @@ public class CitysDao {
 		return false;
 	}
 
+	/**
+	 * 获取区域对象
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public CitysModel getCity(int id) {
 		// TODO Auto-generated method stub
 		CitysModel mCitysModel = null;
@@ -115,5 +133,38 @@ public class CitysDao {
 			}
 		}
 		return mCitysModel;
+	}
+
+	/**
+	 * 获取自身父节点相同的集合
+	 * 
+	 * @param parent_id
+	 * @return
+	 */
+	public ArrayList<CitysModel> getPreCitys(int parent_id) {
+		return getCitys(getPreParent_Id(parent_id));
+	}
+
+	/**
+	 * 获取自身父节点的父节点ID
+	 * 
+	 * @param parent_id
+	 * @return
+	 */
+	public int getPreParent_Id(int parent_id) {
+		int pre_parent_id = 0;
+		try {
+			Statement sql = mConnection.createStatement();
+			ResultSet rs = sql
+					.executeQuery("SELECT parent_id FROM " + CRWorkJDBC.CITY_TABLE + " where id = " + parent_id);
+			while (rs.next()) {
+				pre_parent_id = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pre_parent_id;
+
 	}
 }

@@ -85,19 +85,19 @@ public class MLitterServlet extends HttpServlet {
 			// Export litter data
 			if (submitbtn_ld_export != null) {
 				System.out.println("function is:" + submitbtn_ld_export + "\n");
-				Gson gs = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-				if (mLitterModelList != null && mLitterModelList.size() > 0) {
-					result = gs.toJson(mLitterModelList);
-				} else {
-					result = "fail";
-				}
-
-				System.out.println(TAG + result + "\n");
-
-				out.write(result);
-				out.flush();
-				out.close();
 			}
+			Gson gs = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+			if (mLitterModelList != null && mLitterModelList.size() > 0) {
+				result = gs.toJson(mLitterModelList);
+			} else {
+				result = "fail";
+			}
+
+			System.out.println(TAG + result + "\n");
+
+			out.write(result);
+			out.flush();
+			out.close();
 		}
 	}
 
@@ -153,16 +153,16 @@ public class MLitterServlet extends HttpServlet {
 			// Export litter data
 			if (submitbtn_ld_export != null) {
 				System.out.println("function is:" + submitbtn_ld_export + "\n");
-				Gson gs = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-				if (mLitterModelList != null && mLitterModelList.size() > 0) {
-					result = gs.toJson(mLitterModelList);
-				} else {
-					result = "fail";
-				}
-				out.write(result);
-				out.flush();
-				out.close();
 			}
+			Gson gs = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+			if (mLitterModelList != null && mLitterModelList.size() > 0) {
+				result = gs.toJson(mLitterModelList);
+			} else {
+				result = "fail";
+			}
+			out.write(result);
+			out.flush();
+			out.close();
 		}
 	}
 

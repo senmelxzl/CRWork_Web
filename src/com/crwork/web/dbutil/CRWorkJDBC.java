@@ -13,7 +13,7 @@ import java.sql.Statement;
  *
  */
 public class CRWorkJDBC {
-    private final static String TAG = "CRWorkJDBC";
+	private final static String TAG = "CRWorkJDBC";
 	// Load DB driver com.mysql.jdbc.Driver
 	private static String dbdriver = "com.mysql.jdbc.Driver";
 	// DB name
@@ -23,7 +23,7 @@ public class CRWorkJDBC {
 	// DB login password
 	private static String userpassword = "xzl198819";
 	// Load DB address
-	private static String dburl = "jdbc:mysql://localhost:3306/" + database
+	private static String dburl = "jdbc:mysql://66.98.126.237:3306/" + database
 			+ "?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC";
 
 	private static Connection conn = null;
@@ -49,7 +49,7 @@ public class CRWorkJDBC {
 			+ "(ID int auto_increment primary key not null,littertypeID int not null,typeName varchar(20) not null,typemark int not null,price double(16,2) not null)";
 
 	public final static String CITY_TABLE_SQL = "create table " + CITY_TABLE
-            + "(id int auto_increment primary key not null,parent_id int default null,city_name_zh varchar(20),city_name_en varchar(20),city_level int(11) not null,city_code char(12) not null,city_status_cr int(11) not null)";
+			+ "(id int auto_increment primary key not null,parent_id int default null,city_name_zh varchar(20),city_name_en varchar(20),city_level int(11) not null,city_code char(12) not null,city_status_cr int(11) not null)";
 
 	public CRWorkJDBC() {
 		try {
@@ -62,10 +62,10 @@ public class CRWorkJDBC {
 			validateTableNameExist(CITY_TABLE);
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
-            System.out.println(TAG + e1);
+			System.out.println(TAG + e1);
 			e1.printStackTrace();
 		} catch (SQLException e) {
-            System.out.println(TAG + e);
+			System.out.println(TAG + e);
 
 		}
 	}
@@ -97,7 +97,7 @@ public class CRWorkJDBC {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-            System.out.println(TAG + e);
+			System.out.println(TAG + e);
 			e.printStackTrace();
 		}
 		return vtne;

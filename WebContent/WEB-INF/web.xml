@@ -42,12 +42,12 @@
 	</servlet-mapping>
 	<servlet>
 		<description>get citys</description>
-		<servlet-name>GetCitysServlet</servlet-name>
-		<servlet-class>com.crwork.web.servlet.GetCitysServlet</servlet-class>
+		<servlet-name>MCitysServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.MCitysServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>GetCitysServlet</servlet-name>
-		<url-pattern>/servlet/GetCitysServlet</url-pattern>
+		<servlet-name>MCitysServlet</servlet-name>
+		<url-pattern>/servlet/MCitysServlet</url-pattern>
 	</servlet-mapping>
 	<!-- mobile -->
 	<servlet>
