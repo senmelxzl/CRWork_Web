@@ -20,7 +20,7 @@ import com.google.gson.GsonBuilder;
 /**
  * Servlet implementation class MExportLitterServlet
  */
-@WebServlet("/MExportLitterServlet")
+@WebServlet("/MLitterServlet")
 public class MLitterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String TAG = "MLitterServlet";
@@ -45,7 +45,7 @@ public class MLitterServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
 		String result = "";
-		String userName = request.getParameter("ld_username");
+		String userName = new String(request.getParameter("ld_username").getBytes("iso-8859-1"), "utf-8");
 		String ld_region = request.getParameter("ld_region");
 		String ld_start_date_str = request.getParameter("ld_start_date");
 		String ld_end_date_str = request.getParameter("ld_end_date");
@@ -113,7 +113,7 @@ public class MLitterServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
 		String result = "";
-		String userName = request.getParameter("ld_username");
+		String userName =  new String(request.getParameter("ld_username").getBytes("iso-8859-1"), "utf-8");
 		String ld_region = request.getParameter("ld_region");
 		String ld_start_date_str = request.getParameter("ld_start_date");
 		String ld_end_date_str = request.getParameter("ld_end_date");

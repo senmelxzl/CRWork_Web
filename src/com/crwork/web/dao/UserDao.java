@@ -108,7 +108,7 @@ public class UserDao {
 			pst.setInt(3, mUserModel.getRegionID());
 			pst.setInt(4, mUserModel.getUserType());
 			pst.setDate(5, DateUtil.getCurrentDate());
-			pst.setString(6, "12345678");
+			pst.setString(6, mUserModel.getPsw());
 			pst.setInt(7, mUserModel.getIscr());
 			pst.executeUpdate();
 			pst.close();
@@ -119,9 +119,8 @@ public class UserDao {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			System.out.println("insertUserInfor() completed!" + "\n");
 		}
+		System.out.println("insertUserInfor()  fail!" + "\n");
 		return false;
 	}
 
@@ -263,5 +262,76 @@ public class UserDao {
 		}
 		System.out.println("getUserIdByUserName() completed!" + UserName + "\n");
 		return UserName;
+	}
+
+	/**
+	 * 判断用户是否存在
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public boolean IsUserExist(String userId) {
+		mConnection = mCRWorkJDBC.getCRWorkConn();
+		try {
+			String sql = "select * from " + CRWorkJDBC.USER_TABLE + " where userId=?";
+			PreparedStatement psmt = mConnection.prepareStatement(sql);
+			psmt.setString(1, userId);
+			ResultSet rs = psmt.executeQuery();
+			if (rs.next()) {
+				System.out.println("IsUserExist true!" + "\n");
+				return true;
+			}
+			mConnection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("IsUserExist false!" + "\n");
+		return false;
+	}
+
+	/**
+	 * 初始新增超级管理员
+	 * 
+	 * @return
+	 */
+	public boolean AddAdmin() {
+		UserModel mUserModel = new UserModel();
+		mUserModel.setUserId("19880109");
+		mUserModel.setUserName("超级管理员");
+		mUserModel.setRegionID(742037);
+		mUserModel.setUserType(0);
+		mUserModel.setRegisteredDate(DateUtil.getCurrentDate());
+		mUserModel.setPsw("198819");
+		mUserModel.setIscr(0);
+		return new UserDao().insertUser(mUserModel);
+	}
+
+	/**
+	 * 根据区域ID获取所管辖的userId list
+	 * 
+	 * @param regionID
+	 * @return
+	 */
+	public ArrayList<String> GetUserIdsByRegionID(int regionID) {
+		System.out.println("GetUserIdsByRegionID start!" + "\n");
+		ArrayList<String> userIds = new ArrayList<String>();
+		mConnection = mCRWorkJDBC.getCRWorkConn();
+		try {
+			String sql = "select userId from " + CRWorkJDBC.USER_TABLE + " where regionID=?";
+			PreparedStatement psmt = mConnection.prepareStatement(sql);
+			psmt.setInt(1, regionID);
+			ResultSet rs = psmt.executeQuery();
+			while (rs.next()) {
+				userIds.add(String.valueOf(rs.getInt(1)));
+			}
+			mConnection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("GetUserIdsByRegionID fail! " + e + "\n");
+			e.printStackTrace();
+		}
+		return userIds;
+
 	}
 }

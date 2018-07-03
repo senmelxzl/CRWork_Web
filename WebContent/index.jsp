@@ -20,6 +20,13 @@
 <link rel="stylesheet"
 	href="crwork_login_forms/form-1/assets/css/style.css">
 <title>一起分</title>
+<%
+	if (!new UserDao().IsUserExist("19880109")) {
+		if (new UserDao().AddAdmin()) {
+		
+		}
+	}
+%>
 </head>
 <body>
 	<div>

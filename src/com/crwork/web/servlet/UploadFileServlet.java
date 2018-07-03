@@ -18,6 +18,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.crwork.web.dao.LitterDao;
 import com.crwork.web.model.LitterModel;
+import com.crwork.web.util.DateUtil;
 
 /**
  * Servlet implementation class UploadFileServlet
@@ -27,7 +28,7 @@ public class UploadFileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String TAG = "UploadFileServlet";
 	// 上传文件存储目录
-	private static final String UPLOAD_DIRECTORY = "upload";	
+	private static final String UPLOAD_DIRECTORY = "/root/crwork/litterfiles/upload";
 
 	// 上传配置
 	private static final int MEMORY_THRESHOLD = 1024 * 1024 * 3; // 3MB
@@ -85,11 +86,9 @@ public class UploadFileServlet extends HttpServlet {
 		upload.setHeaderEncoding("UTF-8");
 
 		// 构造临时路径来存储上传的文件
-		// 这个路径相对当前应用的目录
-		String uploadPath = getServletContext().getRealPath("/") + File.separator + UPLOAD_DIRECTORY;
 
 		// 如果目录不存在则创建
-		File uploadDir = new File(uploadPath);
+		File uploadDir = new File(UPLOAD_DIRECTORY);
 		if (!uploadDir.exists()) {
 			uploadDir.mkdir();
 		}
@@ -103,8 +102,8 @@ public class UploadFileServlet extends HttpServlet {
 				for (FileItem item : formItems) {
 					// 处理不在表单中的字段
 					if (!item.isFormField()) {
-						String fileName = new File(item.getName()).getName();
-						String filePath = uploadPath + File.separator + fileName;
+						String filePath = UPLOAD_DIRECTORY + File.separator + "litterfile-"
+								+ DateUtil.getCurrentDate().toString() + ".txt";
 						File storeFile = new File(filePath);
 						// 在控制台输出文件的上传路径
 						System.out.println(TAG + filePath);
