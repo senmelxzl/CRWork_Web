@@ -11,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -22,13 +21,14 @@ import com.crwork.web.model.LitterModel;
 import com.crwork.web.util.DateUtil;
 
 /**
- * Servlet implementation class LoadFileServlet
+ * Servlet implementation class UploadLDServlet
  */
-@WebServlet("/LoadFileServlet")
-public class LoadFileServlet extends HttpServlet {
+@WebServlet("/UploadUsersServlet")
+public class UploadUsersServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String TAG = "UploadUsersServlet";
 	// 上传文件存储目录
-	private static final String UPLOAD_DIRECTORY = "/root/crwork/litterfiles/upload";
+	private static final String UPLOAD_DIRECTORY = "/root/crwork/userfiles/upload";
 
 	// 上传配置
 	private static final int MEMORY_THRESHOLD = 1024 * 1024 * 3; // 3MB
@@ -38,7 +38,7 @@ public class LoadFileServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public LoadFileServlet() {
+	public UploadUsersServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -50,7 +50,6 @@ public class LoadFileServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -60,10 +59,9 @@ public class LoadFileServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		// 检测是否为多媒体上传
+		PrintWriter writer = response.getWriter();
 		if (!ServletFileUpload.isMultipartContent(request)) {
 			// 如果不是则停止
-			PrintWriter writer = response.getWriter();
 			writer.println("Error:form must set enctype=multipart/form-data");
 			writer.flush();
 			return;
@@ -88,11 +86,9 @@ public class LoadFileServlet extends HttpServlet {
 		upload.setHeaderEncoding("UTF-8");
 
 		// 构造临时路径来存储上传的文件
-		// 这个路径相对当前应用的目录
-		String uploadPath = getServletContext().getRealPath("/") + File.separator + UPLOAD_DIRECTORY;
 
 		// 如果目录不存在则创建
-		File uploadDir = new File(uploadPath);
+		File uploadDir = new File(UPLOAD_DIRECTORY);
 		if (!uploadDir.exists()) {
 			uploadDir.mkdir();
 		}
@@ -106,31 +102,32 @@ public class LoadFileServlet extends HttpServlet {
 				for (FileItem item : formItems) {
 					// 处理不在表单中的字段
 					if (!item.isFormField()) {
-						String filePath = UPLOAD_DIRECTORY + File.separator + "litterfile-"
-								+ DateUtil.getCurrentDate().toString() + ".txt";
+						String fileName = new File(item.getName()).getName();
+						String filePath = UPLOAD_DIRECTORY + File.separator + "userfile-"
+								+ DateUtil.getCurrentDate().toString() + "-" + fileName;
 						File storeFile = new File(filePath);
 						// 在控制台输出文件的上传路径
-						System.out.println(filePath);
+						System.out.println(TAG + filePath);
 						// 保存文件到硬盘
+						String result = "";
 						item.write(storeFile);
 						LitterDao mLitterDao = new LitterDao();
 						ArrayList<LitterModel> mLitterModellist = mLitterDao.readDatafromFilePath(filePath);
-						String IsUploaded_message = "上传失败";
 						if (mLitterDao.uploadLitterlistData(mLitterModellist)) {
-							IsUploaded_message = "上传成功";
+							result = "successed";
+						} else {
+							result = "fail";
 						}
-						HttpSession session = request.getSession();
-						session.setAttribute("IsUploaded_message", IsUploaded_message);
-						session.setAttribute("message", "upload file to " + UPLOAD_DIRECTORY + "success!");
-						session.setAttribute("mLitterModellist", mLitterModellist);
+						writer.write(result);
+						writer.flush();
+						writer.close();
+						System.out.println(TAG + "result=" + result);
 					}
 				}
 			}
 		} catch (Exception ex) {
 			request.setAttribute("message", "Error:" + ex.getMessage());
 		}
-		// 跳转到 message.jsp
-		response.sendRedirect(request.getContextPath() + "/crwork_bsm_forms/upload.jsp");
 	}
 
 }

@@ -57,6 +57,7 @@ public class MUserServlet extends HttpServlet {
 			}
 			if (useraction.equals("user_add")) {
 				mUserModel.setPsw("12345678");
+				mUserModel.setMenbers(0);
 			}
 			mUserModel.setUserId(userId);
 			mUserModel.setUserName(userName);
@@ -141,6 +142,7 @@ public class MUserServlet extends HttpServlet {
 			}
 			if (useraction.equals("user_add")) {
 				mUserModel.setPsw("12345678");
+				mUserModel.setMenbers(0);
 			}
 			mUserModel.setUserId(userId);
 			mUserModel.setUserName(userName);
@@ -159,7 +161,7 @@ public class MUserServlet extends HttpServlet {
 			System.out.println(TAG + "iscr=" + iscr);
 			if (useraction.equals("user_add")) {
 				if (!new UserDao().IsUserExist(userId)) {
-					isSuccess = mUserDao.insertUser(mUserModel);
+					isSuccess = new UserDao().insertUser(mUserModel);
 				}
 			} else if (useraction.equals("user_modify")) {
 				isSuccess = mUserDao.updateUser(mUserModel);

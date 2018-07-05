@@ -14,7 +14,9 @@ import java.util.ArrayList;
 
 import com.crwork.web.dbutil.CRWorkJDBC;
 import com.crwork.web.model.LitterModel;
+import com.crwork.web.util.Arith;
 import com.crwork.web.util.DateUtil;
+import com.crwork.web.util.StringUtil;
 
 /**
  * @author xiezhenlin
@@ -157,8 +159,10 @@ public class LitterDao {
 				mLitterModel.setUserId(list_temp[0]);
 				mLitterModel.setLittertypeID(Integer.parseInt(list_temp[1]));
 				mLitterModel.setWeight(Double.parseDouble(list_temp[2]));
-                mLitterModel.settPrice(new BigDecimal(mLitterTypeDao.getTPriceByLitterTypeId(Integer.parseInt(list_temp[1]))
-                        * Double.parseDouble(list_temp[2])).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				mLitterModel
+						.settPrice(new BigDecimal(mLitterTypeDao.getTPriceByLitterTypeId(Integer.parseInt(list_temp[1]))
+								* Double.parseDouble(list_temp[2])).setScale(2, BigDecimal.ROUND_HALF_UP)
+										.doubleValue());
 				mLitterModel.setLitterdate(DateUtil.getCurrentDate());
 				list.add(mLitterModel);
 				line++;
@@ -269,15 +273,19 @@ public class LitterDao {
 	 * @param mEndDate
 	 * @return
 	 */
-	public ArrayList<String[]> exportLitterData(String UserName,String regionName, Date mStartDate, Date mEndDate) {
+	public ArrayList<String[]> exportLitterData(String UserName, String regionName, Date mStartDate, Date mEndDate) {
 		ArrayList<String[]> mLitterList = new ArrayList<String[]>();
 		try {
 			Statement sql = mConnection.createStatement();
 			ResultSet rs = sql.executeQuery(
 					"SELECT cu.userId,cu.userName,cc.city_name_zh,cl.weight,clt.typeName,cl.littertypeID,cl.tPrice,cl.litterdate FROM crwork_user cu INNER JOIN crwork_litter cl On cu.userId = cl.userId INNER JOIN crwork_litter_type clt On cl.littertypeID = clt.littertypeID INNER JOIN crwork_citys cc On cc.id = cu.regionID"
-							+ (mStartDate == null || mEndDate == null ? ";": " where cl.litterdate >= '" + mStartDate + "' and cl.litterdate <= '" + mEndDate
-							+ (UserName==null||UserName.equals("")?"":"' and cu.userName = '" + UserName)
-							+ (regionName==null||regionName.equals("")?"":"' and cc.city_name_zh = '" + regionName) + "';"));
+							+ (mStartDate == null || mEndDate == null ? ";"
+									: " where cl.litterdate >= '" + mStartDate + "' and cl.litterdate <= '" + mEndDate
+											+ (UserName == null || UserName.equals("") ? ""
+													: "' and cu.userName = '" + UserName)
+											+ (regionName == null || regionName.equals("") ? ""
+													: "' and cc.city_name_zh = '" + regionName)
+											+ "';"));
 			String[] mLitter = null;
 			while (rs.next()) {
 				mLitter = new String[8];
@@ -297,6 +305,109 @@ public class LitterDao {
 			System.out.println(TAG + e + "\n");
 		}
 		return mLitterList;
+	}
+
+	/**
+	 * 获取重量信息
+	 * 
+	 * @param littertypeID
+	 * @return
+	 */
+	public Double getLitterWeightTotal(int littertypeID) {
+		try {
+			Statement sql = mConnection.createStatement();
+			ResultSet rs = sql.executeQuery("select sum(weight) from " + CRWorkJDBC.LITTER_TABLE
+					+ (littertypeID > 2 ? "" : " where littertypeID=" + littertypeID));
+			while (rs.next()) {
+				return rs.getDouble(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0.00;
+
+	}
+
+	/**
+	 * 获取重量信息集
+	 * 
+	 * @return
+	 */
+	public String[] getLitterWeight_I() {
+		Double litter_weight_total_ur = getLitterWeightTotal(0);
+		Double litter_weight_total_r = getLitterWeightTotal(1);
+		Double litter_weight_total_k = getLitterWeightTotal(2);
+		Double litter_weight_total = getLitterWeightTotal(3);
+		Double ur_percent = Arith.div(litter_weight_total_ur, litter_weight_total, 4);
+		Double r_percent = Arith.div(litter_weight_total_r, litter_weight_total, 4);
+		Double k_percent = Arith.div(litter_weight_total_k, litter_weight_total, 4);
+		String[] litterweight_i = new String[7];
+		litterweight_i[0] = litter_weight_total_ur > 1000
+				? String.valueOf(Arith.div(litter_weight_total_ur, 1000.00, 5)) + StringUtil.WEIGHT_TON_TIP
+				: String.valueOf(litter_weight_total_ur) + StringUtil.WEIGHT_KG_TIP;
+		litterweight_i[1] = litter_weight_total_r > 1000
+				? String.valueOf(Arith.div(litter_weight_total_r, 1000.00, 5)) + StringUtil.WEIGHT_TON_TIP
+				: String.valueOf(litter_weight_total_r) + StringUtil.WEIGHT_KG_TIP;
+		litterweight_i[2] = Arith.div(litter_weight_total_k, 1000.00, 5) > 1000
+				? String.valueOf(litter_weight_total_k) + StringUtil.WEIGHT_TON_TIP
+				: String.valueOf(litter_weight_total_k) + StringUtil.WEIGHT_KG_TIP;
+		litterweight_i[3] = litter_weight_total > 1000
+				? String.valueOf(Arith.div(litter_weight_total, 1000.00, 5)) + StringUtil.WEIGHT_TON_TIP
+				: String.valueOf(litter_weight_total) + StringUtil.WEIGHT_KG_TIP;
+		litterweight_i[4] = String.valueOf(String.format("%.2f", ur_percent * 100));
+		litterweight_i[5] = String.valueOf(String.format("%.2f", r_percent * 100));
+		litterweight_i[6] = String.valueOf(String.format("%.2f", k_percent * 100));
+		return litterweight_i;
+	}
+
+	/**
+	 * 获取费用收入信息
+	 * 
+	 * @param littertypeID
+	 * @return
+	 */
+	public Double getLitterPriceTotal(int littertypeID) {
+		try {
+			Statement sql = mConnection.createStatement();
+			ResultSet rs = sql.executeQuery("select sum(tPrice) from " + CRWorkJDBC.LITTER_TABLE
+					+ (littertypeID > 2 ? "" : " where littertypeID=" + littertypeID));
+			while (rs.next()) {
+				return rs.getDouble(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0.00;
+
+	}
+
+	/**
+	 * 获取费用信息集
+	 * 
+	 * @return
+	 */
+	public String[] getLitterPrice_I() {
+		Double litter_weight_price_ur = getLitterPriceTotal(0);
+		Double litter_weight_price_r = getLitterPriceTotal(1);
+		Double litter_weight_price_k = getLitterPriceTotal(2);
+		String litter_weight_price_io;
+		String litter_weight_price_io_tip;
+		String[] litterprice_i = new String[5];
+		if (litter_weight_price_ur > litter_weight_price_r) {
+			litter_weight_price_io_tip = StringUtil.OUTCOME_TIP;
+			litter_weight_price_io = String.valueOf(Arith.sub(litter_weight_price_ur, litter_weight_price_r));
+		} else {
+			litter_weight_price_io_tip = StringUtil.INCOME_TIP;
+			litter_weight_price_io = String.valueOf(Arith.sub(litter_weight_price_r, litter_weight_price_ur));
+		}
+		litterprice_i[0] = String.valueOf(litter_weight_price_ur) + StringUtil.RMB_TIP;
+		litterprice_i[1] = String.valueOf(litter_weight_price_r) + StringUtil.RMB_TIP;
+		litterprice_i[2] = String.valueOf(litter_weight_price_k) + StringUtil.RMB_TIP;
+		litterprice_i[3] = String.valueOf(litter_weight_price_io) + StringUtil.RMB_TIP;
+		litterprice_i[4] = litter_weight_price_io_tip;
+		return litterprice_i;
 	}
 
 	public void CloseConnection() {

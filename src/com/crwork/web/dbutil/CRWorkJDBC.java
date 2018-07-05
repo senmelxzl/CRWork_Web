@@ -23,7 +23,7 @@ public class CRWorkJDBC {
 	// DB login password
 	private static String userpassword = "xzl198819";
 	// Load DB address
-	private static String dburl = "jdbc:mysql://66.98.126.237:3306/" + database
+	private static String dburl = "jdbc:mysql://localhost:3306/" + database
 			+ "?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC";
 
 	private static Connection conn = null;
@@ -40,7 +40,7 @@ public class CRWorkJDBC {
 	 * DB table create SQL
 	 */
 	public final static String USER_TABLE_SQL = "create table " + USER_TABLE
-			+ "(ID int auto_increment primary key not null,userId varchar(20) not null,userName varchar(20),regionID int not null,userType int not null,registeredDate date not null,psw varchar(20) not null, iscr int not null) DEFAULT CHARSET=utf8";
+			+ "(ID int auto_increment primary key not null,userId varchar(20) not null,userName varchar(20),regionID int not null,userType int not null,registeredDate date not null,psw varchar(20) not null, iscr int not null, menbers int not null) DEFAULT CHARSET=utf8";
 
 	public final static String LITTER_TABLE_SQL = "create table " + LITTER_TABLE
 			+ "(ID int auto_increment primary key not null,userId int not null,littertypeID int not null,weight double(16,2) not null,tPrice double(16,2) not null,litterdate date not null) DEFAULT CHARSET=utf8";

@@ -21,6 +21,7 @@ public class UserModel {
 	private Date registeredDate;
 	private String psw;
 	private int iscr;
+	private int menbers;// ÈË¿Ú
 
 	public int getID() {
 		return ID;
@@ -84,6 +85,14 @@ public class UserModel {
 
 	public void setIscr(int iscr) {
 		this.iscr = iscr;
+	}
+
+	public int getMenbers() {
+		return menbers;
+	}
+
+	public void setMenbers(int menbers) {
+		this.menbers = menbers;
 	}
 
 }

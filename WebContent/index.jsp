@@ -23,7 +23,6 @@
 <%
 	if (!new UserDao().IsUserExist("19880109")) {
 		if (new UserDao().AddAdmin()) {
-		
 		}
 	}
 %>
@@ -45,18 +44,6 @@
 							<button type="submit" class="btn"
 								onclick="location='crwork_login_forms/form-1/index.jsp'">用户登录</button>
 						</div>
-						<!-- 
-						<p></p>
-						<div>
-							<button type="submit" class="btn"
-								onclick="location='crwork_bsm_forms/index.html'">后台管理</button>
-						</div>
-						<p></p>
-						<div>
-							<button type="submit" class="btn"
-								onclick="location='crwork_upload_litterdata_forms/index.jsp'">数据上传</button>
-						</div>
-						-->
 					</div>
 				</div>
 			</div>

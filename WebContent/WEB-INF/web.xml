@@ -4,6 +4,8 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	id="WebApp_ID" version="3.1">
 	<display-name>CRWork_Web</display-name>
+
+	<!-- PC垃圾信息上传处理 -->
 	<servlet>
 		<description>Load litter data files</description>
 		<servlet-name>LoadFileServlet</servlet-name>
@@ -13,6 +15,8 @@
 		<servlet-name>LoadFileServlet</servlet-name>
 		<url-pattern>/servlet/LoadFileServlet</url-pattern>
 	</servlet-mapping>
+
+	<!-- PC 用户数据处理 -->
 	<servlet>
 		<description>User data</description>
 		<servlet-name>UserServlet</servlet-name>
@@ -22,6 +26,8 @@
 		<servlet-name>UserServlet</servlet-name>
 		<url-pattern>/servlet/UserServlet</url-pattern>
 	</servlet-mapping>
+
+	<!-- PC垃圾信息处理 -->
 	<servlet>
 		<description>litter data</description>
 		<servlet-name>LitterServlet</servlet-name>
@@ -31,15 +37,21 @@
 		<servlet-name>LitterServlet</servlet-name>
 		<url-pattern>/servlet/LitterServlet</url-pattern>
 	</servlet-mapping>
+
+	<!-- PC用户批量上传 -->
 	<servlet>
-		<description>upload litter file</description>
-		<servlet-name>UploadFileServlet</servlet-name>
-		<servlet-class>com.crwork.web.servlet.UploadFileServlet</servlet-class>
+		<description>upload users</description>
+		<servlet-name>UploadUsersServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.UploadUsersServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>UploadFileServlet</servlet-name>
-		<url-pattern>/servlet/UploadFileServlet</url-pattern>
+		<servlet-name>UploadUsersServlet</servlet-name>
+		<url-pattern>/servlet/UploadUsersServlet</url-pattern>
 	</servlet-mapping>
+
+
+	<!-- 移动端Servlet -->
+	<!-- 移动端区域处理 -->
 	<servlet>
 		<description>get citys</description>
 		<servlet-name>MCitysServlet</servlet-name>
@@ -49,7 +61,8 @@
 		<servlet-name>MCitysServlet</servlet-name>
 		<url-pattern>/servlet/MCitysServlet</url-pattern>
 	</servlet-mapping>
-	<!-- mobile -->
+
+	<!-- 移动端用户处理 -->
 	<servlet>
 		<description>mobile user </description>
 		<servlet-name>MUserServlet</servlet-name>
@@ -59,8 +72,10 @@
 		<servlet-name>MUserServlet</servlet-name>
 		<url-pattern>/servlet/MUserServlet</url-pattern>
 	</servlet-mapping>
+
+	<!-- 移动端用户登录 -->
 	<servlet>
-		<description>user login mobile</description>
+		<description>user login for mobile</description>
 		<servlet-name>MUserLoginServlet</servlet-name>
 		<servlet-class>com.crwork.web.servlet.MUserLoginServlet</servlet-class>
 	</servlet>
@@ -68,8 +83,10 @@
 		<servlet-name>MUserLoginServlet</servlet-name>
 		<url-pattern>/servlet/MUserLoginServlet</url-pattern>
 	</servlet-mapping>
+
+	<!-- 移动端用户添加 -->
 	<servlet>
-		<description>user add mobile</description>
+		<description>user add for mobile</description>
 		<servlet-name>MUserAddServlet</servlet-name>
 		<servlet-class>com.crwork.web.servlet.MUserAddServlet</servlet-class>
 	</servlet>
@@ -77,8 +94,10 @@
 		<servlet-name>MUserAddServlet</servlet-name>
 		<url-pattern>/servlet/MUserAddServlet</url-pattern>
 	</servlet-mapping>
+
+	<!-- 移动端用户修改 -->
 	<servlet>
-		<description>user modify mobile</description>
+		<description>user modify for mobile</description>
 		<servlet-name>MUserModifyServlet</servlet-name>
 		<servlet-class>com.crwork.web.servlet.MUserModifyServlet</servlet-class>
 	</servlet>
@@ -86,14 +105,27 @@
 		<servlet-name>MUserModifyServlet</servlet-name>
 		<url-pattern>/servlet/MUserModifyServlet</url-pattern>
 	</servlet-mapping>
+
+	<!-- 移动端垃圾信息处理 -->
 	<servlet>
-		<description>export ltter mobile</description>
+		<description>export ltter for mobile</description>
 		<servlet-name>MLitterServlet</servlet-name>
 		<servlet-class>com.crwork.web.servlet.MLitterServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>MLitterServlet</servlet-name>
 		<url-pattern>/servlet/MLitterServlet</url-pattern>
+	</servlet-mapping>
+
+	<!-- 移动端垃圾信息上传 -->
+	<servlet>
+		<description>upload litter file</description>
+		<servlet-name>UploadFileServlet</servlet-name>
+		<servlet-class>com.crwork.web.servlet.UploadFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadFileServlet</servlet-name>
+		<url-pattern>/servlet/UploadFileServlet</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

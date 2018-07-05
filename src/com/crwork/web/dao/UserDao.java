@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import com.crwork.web.dbutil.CRWorkJDBC;
 import com.crwork.web.model.UserModel;
+import com.crwork.web.util.Arith;
 import com.crwork.web.util.DateUtil;
 
 /**
@@ -110,17 +111,18 @@ public class UserDao {
 			pst.setDate(5, DateUtil.getCurrentDate());
 			pst.setString(6, mUserModel.getPsw());
 			pst.setInt(7, mUserModel.getIscr());
+			pst.setInt(8, mUserModel.getMenbers());
 			pst.executeUpdate();
 			pst.close();
 			mConnection.close();
-			System.out.println("insertUserInfor()  success!" + "\n");
+			System.out.println("insertUser()  success!" + "\n");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("insertUserInfor()  fail!" + "\n");
+		System.out.println("insertUser()  fail!" + "\n");
 		return false;
 	}
 
@@ -333,5 +335,60 @@ public class UserDao {
 		}
 		return userIds;
 
+	}
+
+	/**
+	 * 获取是否分类用户信息
+	 * 
+	 * @param iscr
+	 * @return
+	 */
+	public int getUserCount(int iscr) {
+		mConnection = mCRWorkJDBC.getCRWorkConn();
+		try {
+			Statement sql = mConnection.createStatement();
+			ResultSet rs = sql.executeQuery(
+					"select count(*) from " + CRWorkJDBC.USER_TABLE + (iscr > 1 ? "" : " where iscr=" + iscr));
+			while (rs.next()) {
+				return rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+
+	}
+
+	/**
+	 * 获取用户信息集
+	 * 
+	 * @return
+	 */
+	public String[] getUsers_I() {
+		int user_count_uncr = getUserCount(0);
+		int user_count_iscr = getUserCount(1);
+		int user_count = getUserCount(2);
+		Double uncr_percent = Arith.div((double) user_count_uncr, (double) user_count, 4);
+		Double iscr_percent = Arith.div((double) user_count_iscr, (double) user_count, 4);
+		String[] users_i = new String[5];
+		users_i[0] = String.valueOf(user_count);
+		users_i[1] = String.valueOf(user_count_uncr);
+		users_i[2] = String.valueOf(user_count_iscr);
+		users_i[3] = String.valueOf(String.format("%.2f", uncr_percent * 100));
+		users_i[4] = String.valueOf(String.format("%.2f", iscr_percent * 100));
+		return users_i;
+	}
+
+	/**
+	 * 关闭连接
+	 */
+	public void CloseConnection() {
+		try {
+			mConnection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

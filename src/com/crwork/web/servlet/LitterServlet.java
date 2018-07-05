@@ -73,7 +73,7 @@ public class LitterServlet extends HttpServlet {
 		Date ld_start_date = null;
 		Date ld_end_date = null;
 		String ld_mark = "";
-		String Redirect_url = "/crwork_bsm_forms/table.jsp";
+		String Redirect_url = "/crwork_bsm_forms/query.jsp";
 
 		Double totalWeight = 0.00;
 		Double totalWeight_R = 0.00;
@@ -250,6 +250,7 @@ public class LitterServlet extends HttpServlet {
 			}
 		} else {
 			ld_mark = "2";
+			total_strs = null;
 		}
 		session.setAttribute("total_strs", total_strs);
 		session.setAttribute("ld_mark", ld_mark);
