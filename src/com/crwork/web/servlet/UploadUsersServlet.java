@@ -3,7 +3,6 @@ package com.crwork.web.servlet;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,13 +10,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import com.crwork.web.dao.LitterDao;
-import com.crwork.web.model.LitterModel;
+import com.crwork.web.poi.UsersExcelUtil;
 import com.crwork.web.util.DateUtil;
 
 /**
@@ -103,7 +102,11 @@ public class UploadUsersServlet extends HttpServlet {
 					// 处理不在表单中的字段
 					if (!item.isFormField()) {
 						String fileName = new File(item.getName()).getName();
-						String filePath = UPLOAD_DIRECTORY + File.separator + "userfile-"
+						/*
+						 * String filePath = UPLOAD_DIRECTORY + File.separator +
+						 * DateUtil.getCurrentDate().toString() + "-" + fileName;
+						 */
+						String filePath = getServletContext().getRealPath("/") + File.separator
 								+ DateUtil.getCurrentDate().toString() + "-" + fileName;
 						File storeFile = new File(filePath);
 						// 在控制台输出文件的上传路径
@@ -111,23 +114,27 @@ public class UploadUsersServlet extends HttpServlet {
 						// 保存文件到硬盘
 						String result = "";
 						item.write(storeFile);
-						LitterDao mLitterDao = new LitterDao();
-						ArrayList<LitterModel> mLitterModellist = mLitterDao.readDatafromFilePath(filePath);
-						if (mLitterDao.uploadLitterlistData(mLitterModellist)) {
-							result = "successed";
-						} else {
-							result = "fail";
+						System.out.println(TAG + " file path:" + filePath);
+						List<String[]> listusers = UsersExcelUtil.getExcelData(filePath);
+						String IsUploaded_message = "上传失败";
+						for (String[] users : listusers) {
+							System.out.println(
+									TAG + " Excel result: " + users[0] + " " + users[1] + " " + users[2] + " ");
 						}
-						writer.write(result);
-						writer.flush();
-						writer.close();
-						System.out.println(TAG + "result=" + result);
+						if (listusers != null && listusers.size() > 0) {
+							IsUploaded_message = "上传成功";
+						}
+						HttpSession session = request.getSession();
+						session.setAttribute("IsUploaded_message", IsUploaded_message);
+						session.setAttribute("message", "users");
+						session.setAttribute("listusers", listusers);
 					}
 				}
 			}
 		} catch (Exception ex) {
 			request.setAttribute("message", "Error:" + ex.getMessage());
 		}
+		response.sendRedirect(request.getContextPath() + "/crwork_bsm_forms/upload.jsp");
 	}
 
 }

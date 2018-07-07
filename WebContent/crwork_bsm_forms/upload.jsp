@@ -18,6 +18,9 @@
 <!-- Google Fonts-->
 <link href='https://fonts.googleapis.com/css?family=Open+Sans'
 	rel='stylesheet' type='text/css' />
+<!-- TABLE STYLES-->
+<link href="assets/js/dataTables/dataTables.bootstrap.css"
+	rel="stylesheet" />
 </head>
 <%
 	HttpSession mHttpSession = request.getSession();
@@ -26,12 +29,19 @@
 	ArrayList<LitterModel> mLitterModellist = null;
 	String IsUploaded_message = "";
 	String message = null;
+	List<String[]> listusers = null;
 	if (mHttpSession != null) {
 		isSuccessed = (String) mHttpSession.getAttribute("isSuccessed");
 		mUserModel = (UserModel) mHttpSession.getAttribute("mUserModel");
-		IsUploaded_message = (String) mHttpSession.getAttribute("IsUploaded_message");
 		message = (String) mHttpSession.getAttribute("message");
-		mLitterModellist = (ArrayList<LitterModel>) mHttpSession.getAttribute("mLitterModellist");
+		IsUploaded_message = (String) mHttpSession.getAttribute("IsUploaded_message");
+		if (message != null && !message.equals("")) {
+			if (message.equals("users")) {
+				listusers = (List<String[]>) mHttpSession.getAttribute("listusers");
+			} else if (message.equals("litters")) {
+				mLitterModellist = (ArrayList<LitterModel>) mHttpSession.getAttribute("mLitterModellist");
+			}
+		}
 		session.setMaxInactiveInterval(1800);
 	}
 	UserDao mUserDao = new UserDao();
@@ -127,31 +137,40 @@
 										<label><%=IsUploaded_message%> 共<%=mLitterModellist.size()%>条数据
 										</label>
 									</div>
-									<table class="table table-striped table-bordered table-hover">
-										<tr>
-											<td align="center">编号</td>
-											<td align="center">姓名</td>
-											<td align="center">重量</td>
-											<td align="center">类型</td>
-											<td align="center">费用-/收入+(元)</td>
-											<td align="center">日期</td>
-										</tr>
-										<%
-											for (int i = 0; i < mLitterModellist.size(); i++) {
-										%>
-										<tr class="even gradeC">
-											<td align="center"><%=mLitterModellist.get(i).getUserId()%></td>
-											<td align="center"><%=mUserDao.getUserNameByUserId(mLitterModellist.get(i).getUserId())%></td>
-											<td align="center"><%=mLitterModellist.get(i).getWeight()%>公斤</td>
-											<td align="center"><%=(mLitterModellist.get(i).getLittertypeID() == 0 ? "综合垃圾" : "可回收")%></td>
-											<td align="center"><%=(double) Math.round(mLitterModellist.get(i).gettPrice() * 100) / 100%></td>
-											<td align="center"><%=mLitterModellist.get(i).getLitterdate().toString()%></td>
-										</tr>
-										<%
-											}
-												mUserDao.CloseConnection();
-										%>
+									<table class="table table-striped table-bordered table-hover"
+										id="dataTables-example">
+										<thead>
+											<tr>
+												<td align="center">编号</td>
+												<td align="center">姓名</td>
+												<td align="center">重量</td>
+												<td align="center">类型</td>
+												<td align="center">费用-/收入+(元)</td>
+												<td align="center">日期</td>
+											</tr>
+										</thead>
+										<tbody>
+											<%
+												for (int i = 0; i < mLitterModellist.size(); i++) {
+											%>
+											<tr class="even gradeC">
+												<td align="center"><%=mLitterModellist.get(i).getUserId()%></td>
+												<td align="center"><%=mUserDao.getUserNameByUserId(mLitterModellist.get(i).getUserId())%></td>
+												<td align="center"><%=mLitterModellist.get(i).getWeight()%>公斤</td>
+												<td align="center"><%=(mLitterModellist.get(i).getLittertypeID() == 0 ? "综合垃圾" : "可回收")%></td>
+												<td align="center"><%=(double) Math.round(mLitterModellist.get(i).gettPrice() * 100) / 100%></td>
+												<td align="center"><%=mLitterModellist.get(i).getLitterdate().toString()%></td>
+											</tr>
+											<%
+												}
+													mUserDao.CloseConnection();
+											%>
+										</tbody>
 									</table>
+									<%
+										} else {
+									%>
+									<div class="panel-heading">无数据</div>
 									<%
 										}
 									%>
@@ -168,19 +187,59 @@
 							<div class="panel-heading">用户上传</div>
 							<div class="panel-body">
 								<form method="post"
-									action="${pageContext.request.contextPath}/servlet/LoadFileServlet"
+									action="${pageContext.request.contextPath}/servlet/UploadUsersServlet"
 									enctype="multipart/form-data">
 									<center>
 										<table>
 											<tr>
-												<th><input id="ld_file_path_id" type="file"
-													name="ld_file_path"></th>
-												<th><input id="ld_upload" type="submit"
-													class="btn btn-primary" name="ld_upload" value="上传"></th>
+												<th><input id="users_file_id" type="file"
+													name="users_file_path"></th>
+												<th><input id="user_upload" type="submit"
+													class="btn btn-primary" name="user_upload" value="上传"></th>
 											</tr>
 										</table>
 									</center>
 								</form>
+								<div class="table-responsive">
+									<%
+										if (listusers != null && listusers.size() != 0) {
+									%>
+									<div align="right">
+										<label><%=IsUploaded_message%> 共<%=listusers.size()%>条数据
+										</label>
+									</div>
+
+									<table class="table table-striped table-bordered table-hover"
+										id="dataTables-example">
+										<thead>
+											<tr>
+												<td align="center">编号</td>
+												<td align="center">姓名</td>
+												<td align="center">人口</td>
+											</tr>
+										</thead>
+										<tbody>
+											<%
+												for (int i = 0; i < listusers.size(); i++) {
+											%>
+											<tr class="even gradeC">
+												<td align="center"><%=listusers.get(i)[0]%></td>
+												<td align="center"><%=listusers.get(i)[1]%></td>
+												<td align="center"><%=listusers.get(i)[2]%></td>
+											</tr>
+											<%
+												}
+											%>
+										</tbody>
+									</table>
+									<%
+										} else {
+									%>
+									<div class="panel-heading">无数据</div>
+									<%
+										}
+									%>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -193,6 +252,7 @@
 		<!-- /. PAGE WRAPPER  -->
 	</div>
 	<!-- /. WRAPPER  -->
+
 	<!-- JS Scripts-->
 	<!-- jQuery Js -->
 	<script src="assets/js/jquery-1.10.2.js"></script>
@@ -200,6 +260,22 @@
 	<script src="assets/js/bootstrap.min.js"></script>
 	<!-- Metis Menu Js -->
 	<script src="assets/js/jquery.metisMenu.js"></script>
+	<!-- Morris Chart Js -->
+	<script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+	<script src="assets/js/morris/morris.js"></script>
+
+	<script src="assets/js/easypiechart.js"></script>
+	<script src="assets/js/easypiechart-data.js"></script>
+
+	<script src="assets/js/Lightweight-Chart/jquery.chart.js"></script>
+	<!-- DATA TABLE SCRIPTS -->
+	<script src="assets/js/dataTables/jquery.dataTables.js"></script>
+	<script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#dataTables-example').dataTable();
+		});
+	</script>
 	<!-- Custom Js -->
 	<script src="assets/js/custom-scripts.js"></script>
 </body>

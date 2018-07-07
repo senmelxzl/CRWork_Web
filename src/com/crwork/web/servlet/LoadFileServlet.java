@@ -106,8 +106,13 @@ public class LoadFileServlet extends HttpServlet {
 				for (FileItem item : formItems) {
 					// 处理不在表单中的字段
 					if (!item.isFormField()) {
-						String filePath = UPLOAD_DIRECTORY + File.separator + "litterfile-"
-								+ DateUtil.getCurrentDate().toString() + ".txt";
+						String fileName = new File(item.getName()).getName();
+						/*
+						 * String filePath = UPLOAD_DIRECTORY + File.separator + "litterfile-" +
+						 * DateUtil.getCurrentDate().toString() + ".txt";
+						 */
+						String filePath = getServletContext().getRealPath("/") + File.separator
+								+ DateUtil.getCurrentDate().toString() + "-" + fileName;
 						File storeFile = new File(filePath);
 						// 在控制台输出文件的上传路径
 						System.out.println(filePath);
@@ -121,7 +126,7 @@ public class LoadFileServlet extends HttpServlet {
 						}
 						HttpSession session = request.getSession();
 						session.setAttribute("IsUploaded_message", IsUploaded_message);
-						session.setAttribute("message", "upload file to " + UPLOAD_DIRECTORY + "success!");
+						session.setAttribute("message", "litters");
 						session.setAttribute("mLitterModellist", mLitterModellist);
 					}
 				}
@@ -129,7 +134,6 @@ public class LoadFileServlet extends HttpServlet {
 		} catch (Exception ex) {
 			request.setAttribute("message", "Error:" + ex.getMessage());
 		}
-		// 跳转到 message.jsp
 		response.sendRedirect(request.getContextPath() + "/crwork_bsm_forms/upload.jsp");
 	}
 

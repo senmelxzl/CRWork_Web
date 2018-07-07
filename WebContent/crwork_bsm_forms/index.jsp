@@ -43,7 +43,7 @@
 			mHttpSession.setAttribute("litterprice_i", litterprice_i);
 			mLitterDao.CloseConnection();
 		}
-		mHttpSession.setMaxInactiveInterval(1800);
+		mHttpSession.setMaxInactiveInterval(60);
 	}
 %>
 <body>

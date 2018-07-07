@@ -1,20 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <%@ page language="java" import="java.util.*"%>
 <%@ page language="java" import="com.crwork.web.model.*"%>
 <%@ page language="java" import="com.crwork.web.dao.*"%>
-<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>一起分 用户管理</title>
 <!-- Bootstrap Styles-->
 <link href="assets/css/bootstrap.css" rel="stylesheet" />
 <!-- FontAwesome Styles-->
 <link href="assets/css/font-awesome.css" rel="stylesheet" />
-<!-- Morris Chart Styles-->
-
 <!-- Custom Styles-->
 <link href="assets/css/custom-styles.css" rel="stylesheet" />
 <!-- Google Fonts-->
@@ -94,8 +92,8 @@
 				<li><a href="upload.jsp"><i class="fa fa-fw fa-file"></i>
 						上传</a></li>
 
-				<li><a href="#" class="active-menu"><i
-						class="fa fa-edit"></i> 用户管理 </a></li>
+				<li><a href="#" class="active-menu"><i class="fa fa-edit"></i>
+						用户管理 </a></li>
 			</ul>
 
 		</div>
